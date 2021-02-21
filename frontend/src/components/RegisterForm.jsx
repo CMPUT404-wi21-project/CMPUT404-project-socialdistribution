@@ -21,8 +21,16 @@ const RegisterForm = (props) => {
           >
             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
           </Form.Item>
+
           <Form.Item
-            name="github_url"
+            name="displayName"
+            rules={[{ required: true, message: 'Please input your Display name!' }]}
+          >
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Displayname" />
+          </Form.Item>
+
+          <Form.Item
+            name="git_url"
             rules={[{ required: true, message: 'Please input your Github URL!' }]}
           >
             <Input prefix={<GithubOutlined />} placeholder="Github URL" />
