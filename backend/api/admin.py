@@ -7,6 +7,7 @@ from .models.like import Like
 from .models.follower import Follower
 from .models.friend import Friend
 from .models.inbox import Inbox
+from .models.node import Node
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 
@@ -18,6 +19,7 @@ admin.site.register(Like)
 admin.site.register(Follower)
 admin.site.register(Friend)
 admin.site.register(Inbox)
+admin.site.register(Node)
 
 
 # move request info to Author table with generated url
