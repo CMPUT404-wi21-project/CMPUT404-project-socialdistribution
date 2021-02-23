@@ -41,6 +41,8 @@ source venv/bin/activate
      POSTGRES_USER=coolusername
      POSTGRES_PASSWORD=password
      HOST_URL=http://127.0.0.1:8000/
+     HEROKU_HOST=<Your heroku server url>
+     DATABASE_URL=<Your heroku server db url>
      DEBUG=1
     ```
 
