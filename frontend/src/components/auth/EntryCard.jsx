@@ -19,7 +19,7 @@ const tabList = [
 class EntryCard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { key: 'Register' }
+        this.state = { key: 'Login' }
     }
 
 
@@ -30,7 +30,7 @@ class EntryCard extends React.Component {
     render() {
        return (
            <Card
-            style={{width:"20%"}}
+            style={{width:"50%"}}
             size="small"
             tabList={tabList}
             activeTabKey={this.state.key}
