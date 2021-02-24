@@ -1,6 +1,6 @@
 import React from 'react';
 import CustomLayout from '../containers/layout';
-import EntryCard from '../components/EntryCard';
+import EntryCard from '../components/auth/EntryCard';
 
 
 import {UserSvc} from '../svc/UserSvc';
@@ -28,17 +28,14 @@ class LandingPage extends React.Component {
 
     render() {
         return (
-            <CustomLayout>
-               <Title>Wecolme to Social Distribution</Title>
-                <div className="container" style={{display:"flex", justifyContent:"center"}}>
-                    <EntryCard
-                    style={{backgroundColor:"red"}}
-                    LoginHandler={this.LoginHandler} 
-                    RegisterHandler={this.RegisterHandler}
-                /> 
+               <div>
+                   <Title>Welcome to Social Distribution</Title>
+                    <div className="container" style={{display:"flex", justifyContent:"center"}}>
+                        <EntryCard
+                        LoginHandler={this.LoginHandler} 
+                        RegisterHandler={this.RegisterHandler}/> 
+                    </div>
                 </div>
-               
-            </CustomLayout>
         );
     }
 }
