@@ -8,8 +8,11 @@ from .models.follower import Follower
 from .models.friend import Friend
 from .models.inbox import Inbox
 from .models.node import Node
-from django.conf import settings
-from django.contrib.auth.hashers import make_password
+
+from .adminViews.adminListView import signup_request_admin_list_view
+
+
+
 
 # Register your models here.
 admin.site.register(Post)
@@ -21,27 +24,5 @@ admin.site.register(Friend)
 admin.site.register(Inbox)
 admin.site.register(Node)
 
-
-# move request info to Author table with generated url
-# args
-#       ModelAdmin
-#       request
-#       queryset (selected requests)
-# return
-#       None
-def accept_signup_request(ModelAdmin, request, queryset):
-    for req in queryset:
-        a = Author(username=req.username, password=make_password(req.password), host = req.host, git_url=req.git_url)
-        a.url = f'{settings.HOST_URL}author/{a.id}'
-        a.save()
-    queryset.delete()
-
-accept_signup_request.short_description = "allow them to be on server"
-
-# admin list view for signup requests
-class signup_request_admin(admin.ModelAdmin):
-    list_display = ['username', 'git_url']
-    ordering = ['username']
-    actions = [accept_signup_request]
-
-admin.site.register(Signup_Request, signup_request_admin)
+# custom register
+admin.site.register(Signup_Request, signup_request_admin_list_view)

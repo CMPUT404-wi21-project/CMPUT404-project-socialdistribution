@@ -40,9 +40,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DEBUG', default=1))
 
-# host_url for url generation
-HOST_URL = os.environ.get('HOST_URL')
-
 ALLOWED_HOSTS = [os.environ.get('HEROKU_HOST'), '0.0.0.0', 'localhost', '127.0.0.1']
 
 
