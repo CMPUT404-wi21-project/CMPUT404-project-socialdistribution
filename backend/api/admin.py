@@ -31,7 +31,7 @@ admin.site.register(Node)
 #       None
 def accept_signup_request(ModelAdmin, request, queryset):
     for req in queryset:
-        a = Author(username=req.username, password=make_password(req.password), host = settings.HOST_URL, git_url=req.git_url)
+        a = Author(username=req.username, password=make_password(req.password), host = req.host, git_url=req.git_url)
         a.url = f'{settings.HOST_URL}author/{a.id}'
         a.save()
     queryset.delete()
