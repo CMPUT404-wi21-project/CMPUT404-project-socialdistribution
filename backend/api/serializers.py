@@ -1,4 +1,4 @@
-from .models import author, post
+from .models import author, post, signupRequest
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.core import serializers as serialize
@@ -24,3 +24,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         #token.update({'user': user.name})
         return token
     
+class SignupSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = signupRequest.Signup_Request
+    fields = ['username','password','git_url', 'host', 'displayName']
