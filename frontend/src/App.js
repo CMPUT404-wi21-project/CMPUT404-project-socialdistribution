@@ -2,7 +2,7 @@ import React from "react"
 import './App.css';
 import 'antd/dist/antd.css';
 
-import {  Router} from 'react-router-dom';
+import { Router  } from 'react-router-dom';
 import BaseRouter from './routes';
 
 // State

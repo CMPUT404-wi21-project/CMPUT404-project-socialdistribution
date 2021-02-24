@@ -15,7 +15,6 @@ class Logout extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated, 
 });
 
 export default connect(mapStateToProps, {logout})(Logout);

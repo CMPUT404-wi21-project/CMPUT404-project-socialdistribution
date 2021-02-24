@@ -29,12 +29,6 @@ class LoginForm extends React.Component {
                 this.setState({msg: null});
             }
         }
-        
-        // This should be authenticated routing
-        if (isAuthenticated) {
-            // Send the user to the homepage
-            console.log('Sending user to the homepage');
-        }
     }
 
     componentWillUnmount() {

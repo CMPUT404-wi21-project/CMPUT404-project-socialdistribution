@@ -13,14 +13,14 @@ import {
     REGISTER_FAIL,
 } from './types';
 
-
 // Check token & load user
 export const loadUser = () => (dispatch, getState) => {
     // User Loading
     dispatch({ type: USER_LOADING });
     
         // Fetch the user
-    axios.get('/api/author/current/', tokenConfig(getState))
+    axios.get(process.env.REACT_APP_HOST +
+        '/api/author/current/', tokenConfig(getState))
         .then(res => dispatch({
             type: USER_LOADED,
             payload: res.data,
@@ -45,13 +45,12 @@ export const register = ({username, password, github_url, displayName}) => dispa
     // Request body
     const body = JSON.stringify({username, password, github_url, displayName});
 
-    axios.post('/author/register/', body, config)
+    axios.post(process.env.REACT_APP_HOST +
+        '/author/register/', body, config)
         .then(res => dispatch({
             type: REGISTER_SUCCESS,
         }))
         .catch(err => {
-            console.log(err);
-            console.log({...err})
             if (err.response.data.username) {
                 err.response.data = err.response.data.username;
             }
@@ -71,7 +70,8 @@ export const login = ({username, password}) => dispatch => {
 
     // Request body
     const body = JSON.stringify({username, password });
-    axios.post('/author/login/', body, config)
+    axios.post(process.env.REACT_APP_HOST +
+        '/author/login/', body, config)
         .then(res => dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data,

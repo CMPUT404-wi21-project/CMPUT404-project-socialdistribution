@@ -9,19 +9,19 @@ from rest_framework.permissions import AllowAny
 @permission_classes((AllowAny,))
 def createSignupRequest(request):
     host = request.get_host()
-    if 'localhost' in host:
-        host = "http://" + host
+    if request.is_secure():
+        protocol = 'https://'
+    else:
+        protocol = 'http://'
+    host = protocol + host + '/'
     request.data['host'] = host
     serializer = SignupSerializer(data=request.data)
     
     #print("\n\n host",host,"\n\n")
     if serializer.is_valid():
         new_signupRequest = serializer.save()
-        # new_signupRequest.is_active = False
-        # new_signupRequest.host = request.get_host()
-        # url = "{}/author/{}".format(new_author.host, new_author.id.hex)
         new_signupRequest.save()
-        # to be added: redirect to the login page
+        # to be added: redirect to some success info page
         return Response(status=status.HTTP_201_CREATED)
 
     print("\n\n",serializer.errors,"\n\n")

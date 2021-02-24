@@ -3,9 +3,7 @@ import React from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 
 import {connect} from 'react-redux';
-import {logout} from '../actions/authActions';
 import Logout from '../components/auth/Logout';
-import MenuItem from 'antd/lib/menu/MenuItem';
 import { InboxOutlined, UserOutlined  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 

@@ -15,8 +15,15 @@ class postServices():
       # set url for created post model
       postInstance.url = request.build_absolute_uri() + str(postInstance.post_id)
       postInstance.save()
-      return Response(status=status.HTTP_201_CREATED)
+        
+      serialized_post = json.loads(serializers.serialize('json', [postInstance]))
+      data = serialized_post[0]['fields']
+      data['post_id'] = serialized_post[0]['pk']
 
+      # Send the created post back to the user in case they need to use it immediately on the frontend
+      res = Response(status=status.HTTP_201_CREATED)
+      res.data = data
+      return res
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
   @staticmethod
