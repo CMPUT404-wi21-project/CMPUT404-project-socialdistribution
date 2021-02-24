@@ -3,8 +3,6 @@ import CustomLayout from '../containers/layout';
 import EntryCard from '../components/auth/EntryCard';
 
 
-import {UserSvc} from '../svc/UserSvc';
-
 import {Typography} from 'antd';
 const {Title} = Typography;
 
@@ -18,13 +16,7 @@ class LandingPage extends React.Component {
         super(props);
     }
     
-    LoginHandler = (values) => {
-        UserSvc.Login(values);
-    }
 
-    RegisterHandler = (values) => {
-        UserSvc.Register(values);
-    }
 
     render() {
         return (

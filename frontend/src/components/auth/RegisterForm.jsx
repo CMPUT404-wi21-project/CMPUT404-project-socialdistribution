@@ -83,7 +83,7 @@ class RegisterForm extends React.Component {
             <Input prefix={<FontSizeOutlined />} placeholder="Display Name" />
           </Form.Item>
           <Form.Item
-            name="github_url"
+            name="git_url"
             rules={[{ required: false, message: 'Please input your Github URL!' }]}
           >
             <Input prefix={<GithubOutlined />} placeholder="Github URL(Optional)" />
