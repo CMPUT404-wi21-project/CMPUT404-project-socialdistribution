@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
+import {Row, Col, Button} from 'antd';
+import { PlusOutlined  } from '@ant-design/icons';
 
 class HomePage extends React.Component {
     render() {
@@ -8,7 +10,17 @@ class HomePage extends React.Component {
             return <Redirect to="/"/>
         }
         return (
-        <h1> Social Distribution Home Page </h1>
+        <>
+            <Row style={{margin: "2%"}}>
+              <Button type="primary" icon={<PlusOutlined />} size="large">
+                Create Post  
+              </Button>
+            </Row>
+            <Row type="flex" justify="center" align="middle">
+                <h1>Stuff will go here, like a Stream ;)</h1>
+            </Row>
+        </>
+        
        ); 
     }
 }

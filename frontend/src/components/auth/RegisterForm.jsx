@@ -19,23 +19,22 @@ import {clearErrors} from '../../actions/errorActions';
 class RegisterForm extends React.Component {
     state = {
         msg: null,
+        msg_type: null    
     };
 
     componentDidUpdate(prevProps) {
-        const { error, isAuthenticated} = this.props;
+        const { error, isAuthenticated, isRegistered} = this.props;
         if (error !== prevProps.error) {
             // Check for a register error
             if (error.id === 'REGISTER_FAIL') {
-               this.setState({msg: error.msg}); 
+               this.setState({msg: error.msg, msg_type: "error"}); 
             } else {
-                this.setState({msg: null});
+                this.setState({msg: null, msg_type: null});
             }
-        }
-        
-        // This should be authenticated routing
-        if (isAuthenticated) {
+            // This should be authenticated routing
+        } else if (isRegistered != prevProps.isRegistered) {
             // Send the user to the homepage
-            console.log('Sending user to the homepage');
+            this.setState({msg: "Successfully Registered! Please await admin approval before Login!", msg_type: "success"})
         }
     }
 
@@ -59,7 +58,7 @@ class RegisterForm extends React.Component {
           initialValues={{ remember: true }}
           onFinish={this.onRegister}
         >
-          {this.state.msg? <Alert message={this.state.msg} type="error" />: null}
+          {this.state.msg? <Alert message={this.state.msg} type={this.state.msg_type} />: null}
           <Form.Item
             name="username"
             rules={[{ required: true, message: 'Please input your Username!' }]}
@@ -106,6 +105,7 @@ RegisterForm.propTypes = {
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
+    isRegistered: state.auth.isRegistered,
     error: state.error,
 });
 

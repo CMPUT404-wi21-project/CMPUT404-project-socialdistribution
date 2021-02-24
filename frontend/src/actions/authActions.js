@@ -45,12 +45,16 @@ export const register = ({username, password, github_url, displayName}) => dispa
     // Request body
     const body = JSON.stringify({username, password, github_url, displayName});
 
-    axios.post('/api/register/', body, config)
+    axios.post('/author/register/', body, config)
         .then(res => dispatch({
             type: REGISTER_SUCCESS,
-            payload: res.data,
         }))
         .catch(err => {
+            console.log(err);
+            console.log({...err})
+            if (err.response.data.username) {
+                err.response.data = err.response.data.username;
+            }
             dispatch(returnErrors(err.response.data, err.response.status, "REGISTER_FAIL"));
             dispatch({type: REGISTER_FAIL});
         });
@@ -67,7 +71,7 @@ export const login = ({username, password}) => dispatch => {
 
     // Request body
     const body = JSON.stringify({username, password });
-    axios.post('/api/login/', body, config)
+    axios.post('/author/login/', body, config)
         .then(res => dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data,

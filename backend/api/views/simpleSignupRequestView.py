@@ -25,4 +25,4 @@ def createSignupRequest(request):
         return Response(status=status.HTTP_201_CREATED)
 
     print("\n\n",serializer.errors,"\n\n")
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
