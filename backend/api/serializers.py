@@ -19,9 +19,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token['username'] = 'AnkushSharma'
-        data = {'refresh': token.token, 'access_token': token.access_token, 'user': 'asd'}
-        #token.update({'user': user.name})
         return token
     
 class SignupSerializer(serializers.ModelSerializer):
