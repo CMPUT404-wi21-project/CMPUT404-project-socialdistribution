@@ -29,4 +29,5 @@ yarn build
 yarn test
 ```
 
-
+### env file
+- Add in file .env, with `REACT_APP_HOST=<your-Host>`, has to start with `REACT_APP` to let react read in env var
