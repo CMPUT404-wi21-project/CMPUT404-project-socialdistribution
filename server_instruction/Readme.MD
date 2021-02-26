@@ -35,16 +35,16 @@ heroku addons:create heroku-postgresql:hobby-dev
 - bind code to heroku server
   - `git remote -v` to check if the remote is created
   - if no remote called heroku, set manually `git remote add heroku <heroku app git link>`, note it is git link, not app link. It will be better to set up `frontend` `backend` with different name of remote because the sit remote will stay after change branch, remote names such as `heroku-backend` is good, `heroku-frontend` for this read me, I will assume the remote name is `heroku`.
-  - for backend branch, add env file, remember to have `HEROKU_HOST` and `DATABASE_URL` set up. Also, set debug to 0
+  - for backend branch, add env file, remember to have `HEROKU_HOST` and `DATABASE_URL` set up. Also, set PROD to 1
   ```
   POSTGRES_DB=mydb_dev
   POSTGRES_NAME=mydb_dev
   POSTGRES_USER=coolusername
   POSTGRES_PASSWORD=password
-  HOST_URL=http://127.0.0.1:8000/
-  HEROKU_HOST = '<your app link not heroku git link>'
-  DATABASE_URL = '<heroku postgres link>'
-  DEBUG=0
+  HEROKU_HOST=<Your heroku server url>
+  DATABASE_URL=<Your heroku server db url>
+  DEBUG=1
+  PROD=1
   ```
   - then, `git push heroku +HEAD:main`, it will deploy your current code up to the logged in app
 

@@ -16,7 +16,6 @@ import psycopg2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(BASE_DIR)
 # Load .env file into here
 env_path = os.path.join(BASE_DIR, '.env')
 try:
@@ -38,7 +37,8 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DEBUG', default=1))
+DEBUG = True
+PROD = int(os.environ.get('PROD', default=1))
 
 ALLOWED_HOSTS = [os.environ.get('HEROKU_HOST'), '0.0.0.0', 'localhost', '127.0.0.1']
 
@@ -111,7 +111,7 @@ DATABASES = {
         }
 }
 
-if not os.environ.get('DEBUG'):
+if PROD:
     DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
@@ -177,7 +177,7 @@ REST_FRAMEWORK = {
 }
 
 # heroku add on
-if not os.environ.get("DEBUG"):
+if PROD:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
     CORS_ORIGIN_ALLOW_ALL = True
