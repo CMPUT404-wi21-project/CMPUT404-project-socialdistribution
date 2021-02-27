@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 import uuid
 # Import Any Related Models
 from api.models.author import Author
@@ -56,6 +57,8 @@ class Post(models.Model):
     
     # Full url of the post
     url = models.URLField(null=False)
+
+    categories = ArrayField(models.CharField(max_length=200), blank=True, default=list)
 
     # TBD Fields
     # Source, Origin, Categories(maybe use an array field for this??)

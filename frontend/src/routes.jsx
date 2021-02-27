@@ -7,10 +7,6 @@ import HomePage from './pages/homepage';
 import NotFound from './pages/notfound';
 import CustomLayout from './containers/layout';
 
-
-/*Private Routing*/
-import AuthenticatedRoute from './components/auth/AuthenticatedRoute';
-
 /*
  * Central file for all routing related tasks.
  */

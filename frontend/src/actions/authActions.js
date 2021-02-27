@@ -51,8 +51,6 @@ export const register = ({username, password, github_url, displayName}) => dispa
             type: REGISTER_SUCCESS,
         }))
         .catch(err => {
-            console.log(err);
-            console.log({...err})
             if (err.response.data.username) {
                 err.response.data = err.response.data.username;
             }

@@ -2,7 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Row, Col, Button} from 'antd';
-import { PlusOutlined  } from '@ant-design/icons';
+
+
+import CreatePostModal from '../components/post/CreatePostModal';
 
 class HomePage extends React.Component {
     render() {
@@ -12,9 +14,7 @@ class HomePage extends React.Component {
         return (
         <>
             <Row style={{margin: "2%"}}>
-              <Button type="primary" icon={<PlusOutlined />} size="large">
-                Create Post  
-              </Button>
+              <CreatePostModal/>
             </Row>
             <Row type="flex" justify="center" align="middle">
                 <h1>Stuff will go here, like a Stream ;)</h1>
