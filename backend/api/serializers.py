@@ -24,4 +24,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class SignupSerializer(serializers.ModelSerializer):
   class Meta:
     model = signupRequest.Signup_Request
-    fields = ['username','password','git_url', 'host', 'displayName']
+    fields = ['username','password','github', 'host', 'displayName']
+
+# serializer for author model
+class AuthorSerializer(serializers.ModelSerializer):
+  type = serializers.CharField(default='author')
+
+  class Meta:
+    model = author.Author
+    fields = ['type', 'id', 'host', 'displayName', 'url', 'github']
+
+  # only allowing change displayName and github link
+  def update(self, instance, validated_data):
+    instance.displayName = validated_data.get('displayName', instance.displayName)
+    instance.github = validated_data.get('github', instance.github)
+    instance.save()
+    return instance
