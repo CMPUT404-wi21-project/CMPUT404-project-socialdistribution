@@ -88,6 +88,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'socialdistribution.wsgi.application'
 
+from datetime import timedelta
+SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=600),
+    }
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
