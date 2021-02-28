@@ -33,7 +33,7 @@ class Signup_Request(models.Model):
     password    =   models.CharField(max_length=128, verbose_name='password')
 
     # Github page
-    git_url     =   models.URLField(default='http://github.com/' ,max_length=500)
+    github     =   models.URLField(default='http://github.com/' ,max_length=500)
 
     # Which host this user was created on
     host        =   models.URLField(max_length=500)

@@ -13,7 +13,7 @@ from ..models.author import Author
 #       None
 def accept_signup_request(ModelAdmin, request, queryset):
     for req in queryset:
-        a = Author(displayName=req.displayName ,username=req.username, password=make_password(req.password), host = req.host, git_url=req.git_url)
+        a = Author(displayName=req.displayName ,username=req.username, password=make_password(req.password), host = req.host, github=req.github)
         a.url = f'{req.host}author/{a.id}'
         a.save()
     queryset.delete()
