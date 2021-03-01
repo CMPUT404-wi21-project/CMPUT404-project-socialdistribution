@@ -50,7 +50,7 @@ class CommentSerializer(serializers.ModelSerializer):
 # serializer for author model
 class AuthorSerializer(serializers.ModelSerializer):
   type = serializers.CharField(default='author')
-
+  id = serializers.URLField(source='url')
   class Meta:
     model = author.Author
     fields = ['type', 'id', 'host', 'displayName', 'url', 'github']
