@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Form, Input, Radio, Select, Switch, Alert } from 'antd';
+import { Modal, Button, Form, Input, Radio, Select, Switch, Alert, Upload } from 'antd';
 import { PlusOutlined, MinusCircleOutlined  } from '@ant-design/icons';
 
 // Import actions
@@ -38,6 +38,7 @@ class CreatePostModal extends React.Component {
         categories: {},
         type: "text/plain",
         msg: null,
+        image: null,
     }
 
 
@@ -66,6 +67,52 @@ class CreatePostModal extends React.Component {
         // Clear all the content of the modal as well
     }
 
+    getBase64(e) {
+        var file = e.target.files[0];
+        if (file === undefined) {
+          return;
+        } else {
+          let reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            this.setState(({image:reader.result}))
+          };
+          reader.onerror = (err) => {
+            console.log(err);
+          };
+        }
+      }
+    
+    jpegFormItem = () => (
+        
+        <Form.Item 
+            name="content"
+            rules={[{required: true, message: "Please Upload An Image"}]}
+        >
+            <input
+              type="file"
+              accept=".jpeg"
+              onChange={(e) => this.getBase64(e)}
+            />
+            
+        </Form.Item>
+    );
+
+    pngFormItem = () => (
+        
+        <Form.Item 
+            name="content"
+            rules={[{required: true, message: "Please Upload An Image"}]}
+        >
+            <input
+              type="file"
+              accept=".png"
+              onChange={(e) => this.getBase64(e)}
+            />
+
+        </Form.Item>
+    );
+
     showModal = () => {
         this.setState({visible: true});
     }
@@ -78,7 +125,9 @@ class CreatePostModal extends React.Component {
         if (values.unlisted === undefined) {
             values.unlisted = false;
         }
-
+        if (values.contentType==="image/png;base64" || values.contentType==="image/jpeg;base64"){
+            values.content = this.state.image;
+        }
         this.props.createPost(values); 
     }
      
@@ -175,6 +224,8 @@ class CreatePostModal extends React.Component {
                         </Form.Item>
                     {this.state.type == "text/plain"?plaintextFormItem():null}
                     {this.state.type == "text/markdown"?markdownFormItem():null}
+                    {this.state.type == "image/jpeg;base64"?this.jpegFormItem():null}
+                    {this.state.type == "image/png;base64"?this.pngFormItem():null}
                     </Form>
                 </Modal>
             </>
