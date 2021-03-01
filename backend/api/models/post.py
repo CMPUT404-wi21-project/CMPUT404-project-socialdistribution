@@ -60,5 +60,9 @@ class Post(models.Model):
 
     categories = ArrayField(models.CharField(max_length=200), blank=True, default=list)
 
-    # TBD Fields
-    # Source, Origin, Categories(maybe use an array field for this??)
+    # Resolve the Authors who can view this post
+    def get_visible_authors(self):
+        if self.visibility == "public":
+            return Author.objects.all()
+        # Need to handle other visibility cases when the friend and follow model is made
+        return []
