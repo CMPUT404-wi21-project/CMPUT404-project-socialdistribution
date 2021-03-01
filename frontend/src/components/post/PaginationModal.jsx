@@ -14,7 +14,7 @@ class PaginationModal extends React.Component {
   };
 
   render() {
-    return <Pagination current={this.state.current} onChange={this.onChange} total={50} />;
+    return <Pagination current={this.state.current} pageSize={50} onChange={this.onChange} total={50} />;
   }
 }
 

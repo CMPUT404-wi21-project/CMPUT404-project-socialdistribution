@@ -35,6 +35,7 @@ class myPostsPage extends React.Component {
   addPostsIntoList = (posts) => {
     for (let i = 0; i < posts.length; i++) {
       listData.push({
+        author: `${posts[i]['author']['displayName']}`,
         href: `${posts[i]['id']}`,
         title: `${posts[i]['title']}`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -56,7 +57,6 @@ class myPostsPage extends React.Component {
           <CreatePostModal/>
         </Row>
         <>
-
           <List
             itemLayout="vertical"
             size="large"
@@ -71,16 +71,6 @@ class myPostsPage extends React.Component {
                     <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                   ]
                 }
-                // display picture
-                // extra={
-                //   (
-                //     <img
-                //       width={272}
-                //       alt="logo"
-                //       src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                //     />
-                //   )
-                // }
               >
                 <Skeleton loading={false} active avatar>
                   <List.Item.Meta
@@ -88,6 +78,7 @@ class myPostsPage extends React.Component {
                     title={<a href={item.href}>{item.title}</a>}
                     description={item.description}
                   />
+                  {item.author} <br/>
                   {item.content}
                 </Skeleton>
               </List.Item>

@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from ..services.postServices import postServices
-import sys
+
 @api_view(['POST', 'GET'])
 def handlePostByAuthorId(request, author_id):
   try:

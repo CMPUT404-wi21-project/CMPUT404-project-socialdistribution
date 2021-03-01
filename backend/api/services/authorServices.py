@@ -3,8 +3,6 @@ from ..serializers import AuthorSerializer
 from rest_framework import status
 from rest_framework.response import Response
 
-import sys
-
 '''
 Getting author api format json from author id 
 input:
