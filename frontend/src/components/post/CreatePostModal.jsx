@@ -79,6 +79,7 @@ class CreatePostModal extends React.Component {
           };
           reader.onerror = (err) => {
             console.log(err);
+            this.setState({msg: err}); 
           };
         }
       }
