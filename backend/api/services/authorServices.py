@@ -1,4 +1,4 @@
-from ..models import author
+from ..models.author import Author
 from ..serializers import AuthorSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -10,7 +10,7 @@ input:
 return:
     json or 404
 '''
-def getAuthorJsonById(id){
+def getAuthorJsonById(id):
     try:
         a = Author.objects.get(id=id)
     except:
@@ -18,4 +18,4 @@ def getAuthorJsonById(id){
 
     serializer = AuthorSerializer(a)
     return Response(serializer.data)    
-}
+
