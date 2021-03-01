@@ -12,6 +12,7 @@ from ..models.post import Post
 from ..serializers import CommentSerializer
 
 # Helper Imports
+from ..services.authorServices import getAuthorJsonById
 from django.core import serializers
 from django.core.paginator import Paginator
 import json
@@ -74,7 +75,7 @@ class commentServices():
             # Maybe perform pagination stuff here?
 
             # Retrieve the comments for this post
-            comments = Comment.objects.filter(post_id__exact=post_id)
+            comments = Comment.objects.filter(post_id__exact=post_id).order_by("-published")
             
             # Get pagination query items
             pageSize = request.GET.get('size', 5)
@@ -128,7 +129,7 @@ class commentServices():
     def formatJSONComment(request, comment):
         JSONcomment = {}
         JSONcomment['type'] = "comment"
-        JSONcomment['author'] = "" # Fill this with the author of the comments information
+        JSONcomment['author'] = getAuthorJsonById(comment['C_author_id']).data
         JSONcomment["comment"] = comment["content"] 
         JSONcomment["contentType"] = comment["contentType"]
         JSONcomment["published"] = comment["published"]
