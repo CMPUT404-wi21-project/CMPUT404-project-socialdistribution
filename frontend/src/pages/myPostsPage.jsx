@@ -7,19 +7,11 @@ import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 
 
 import CreatePostModal from '../components/post/CreatePostModal';
+import PaginationModal from '../components/post/PaginationModal';
 
-const listData = [];
-for (let i = 0; i < 3; i++) {
-  listData.push({
-    href: 'https://ant.design',
-    title: `ant design part ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-      'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-      'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  });
-}
+import { getCurAuthorPosts } from '../actions/postActions';
+
+let listData = [];
 
 const IconText = ({ icon, text }) => (
   <span>
@@ -30,9 +22,31 @@ const IconText = ({ icon, text }) => (
 
 class myPostsPage extends React.Component {
   constructor(props){
-    super(props)
-    console.log(this.props)
+    super(props);
+    this.addPostsIntoList = this.addPostsIntoList.bind(this);
   }
+
+  componentDidMount = () =>{
+    this.props.getCurAuthorPosts();
+    listData = []
+    this.addPostsIntoList(this.props.post);
+  }
+
+  addPostsIntoList = (posts) => {
+    for (let i = 0; i < posts.length; i++) {
+      listData.push({
+        author: `${posts[i]['author']['displayName']}`,
+        href: `${posts[i]['id']}`,
+        title: `${posts[i]['title']}`,
+        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+        description:
+        `${posts[i]['description']}`,
+        content:
+        `${posts[i]['content']}`,
+      });
+    }
+  }
+
   render() {
     if (!this.props.isAuthenticated) {
         return <Redirect to="/"/>
@@ -43,7 +57,6 @@ class myPostsPage extends React.Component {
           <CreatePostModal/>
         </Row>
         <>
-
           <List
             itemLayout="vertical"
             size="large"
@@ -58,15 +71,6 @@ class myPostsPage extends React.Component {
                     <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                   ]
                 }
-                extra={
-                  (
-                    <img
-                      width={272}
-                      alt="logo"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                    />
-                  )
-                }
               >
                 <Skeleton loading={false} active avatar>
                   <List.Item.Meta
@@ -74,12 +78,16 @@ class myPostsPage extends React.Component {
                     title={<a href={item.href}>{item.title}</a>}
                     description={item.description}
                   />
+                  {item.author} <br/>
                   {item.content}
                 </Skeleton>
               </List.Item>
             )}
           />
         </>
+        <Row style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+          <PaginationModal/>
+        </Row>
     </>
    ); 
   }
@@ -88,6 +96,7 @@ class myPostsPage extends React.Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
+  post: state.post.posts,
 });
 
-export default connect(mapStateToProps, {})(myPostsPage);
+export default connect(mapStateToProps, {getCurAuthorPosts})(myPostsPage);

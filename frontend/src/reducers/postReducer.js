@@ -3,7 +3,10 @@ import {
     CREATE_POST, 
     DELETE_POST, 
     CREATE_POST_FAIL,
-    CREATE_POST_SUCCESS
+    CREATE_POST_SUCCESS,
+    GET_AUTHOR_POSTS,
+    GET_AUTHOR_POST_SUCCESS,
+    GET_AUTHOR_POST_FAIL
 } from '../actions/types';
 
 // NOTE: This state is very temporary, whoever expands on posts should feel free to change it
@@ -48,6 +51,17 @@ export default function(state = initialState, action) {
                 getError: false,
 
             }
+        case GET_AUTHOR_POST_SUCCESS:{
+            return{
+                ...state,
+                posts: action.payload,
+                isLoading: false,
+                createError: false,
+                deleteError: false,
+                editError: false,
+                getError: false, 
+            }
+        }
         default:
             return state;
     }

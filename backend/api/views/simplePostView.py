@@ -38,14 +38,15 @@ def createNewPost(request, author_id):
 # pageNum, optional, int
 #####################################
 def getPostsByAuthorId(request, author_id, pageNum = 0):
-  request.data['author_id'] = author_id
+  if 'pageNum' in request.data.keys():
+    pageNum = int(request.data.dict()['pageNum'])
   res = postServices.getPostByAuthorId(request, author_id)
   if res.status_code == 404:
     return res
   pagedRes = postServices.getPaginatedPosts(res, pageNum).data
 
   for i in range(len(pagedRes)):
-    pagedRes[i] = postServices.formatJSONpost(request, pagedRes[i]).data
+    pagedRes[i] = postServices.formatJSONpost(request, pagedRes[i], author_id, pagedRes[i]['post_id']).data
   return Response(pagedRes)
 
 ############################################
@@ -71,7 +72,7 @@ def getPost(request, author_id, post_id):
   res = postServices.getPostByPostId(request, post_id, author_id)
   if res.status_code == 404:
     return res
-  formatedRes = postServices.formatJSONpost(request, res.data)
+  formatedRes = postServices.formatJSONpost(request, res.data, author_id)
   return formatedRes
 
 # method for same link goes down to here

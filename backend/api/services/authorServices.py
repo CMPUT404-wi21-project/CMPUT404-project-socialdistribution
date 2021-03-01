@@ -15,7 +15,6 @@ def getAuthorJsonById(id):
         a = Author.objects.get(id=id)
     except:
         return Response(status=404)
-
+    
     serializer = AuthorSerializer(a)
     return Response(serializer.data)    
-

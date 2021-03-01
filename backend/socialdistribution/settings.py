@@ -188,7 +188,7 @@ if PROD:
     options.pop('sslmode', None)
 
 # longer access key life time
-if not os.environ.get('DEBUG'):
+if os.environ.get('DEBUG'):
     SIMPLE_JWT = {
         'ACCESS_TOKEN_LIFETIME': timedelta(minutes=600),
     }
