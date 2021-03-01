@@ -1,5 +1,6 @@
 from ..models import post
 from ..serializers import PostSerializer
+from .authorServices import getAuthorJsonById
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -54,7 +55,9 @@ class postServices():
       data = json.loads(data)
       data = sorted(data, key=lambda d: d['fields']["published"], reverse=True)
       for i in range(len(data)):
+        data[i]['fields']['post_id'] = data[i]['pk']
         data[i] = data[i]['fields']
+        
       return Response(data)
     except:
       return Response(status=status.HTTP_404_NOT_FOUND)
@@ -81,29 +84,29 @@ class postServices():
   # input:
   # request, http request
   # res: not formed response
+  # author_id: uuid of author, used to fetch author model
   #
   # return: formatted json response
   #################################################
-  def formatJSONpost(request, post):
+  def formatJSONpost(request, post, author_id, post_id = ''):
 
     formedJsonRes = {}
     formedJsonRes['type'] = 'post'
     formedJsonRes['title'] = post['title']
-    formedJsonRes['id'] = request.build_absolute_uri()
+    formedJsonRes['id'] = request.build_absolute_uri() + post_id
     if 'source' in post.keys():
       formedJsonRes['source'] = post['source']
     else:
-      formedJsonRes['source'] = ''
-    formedJsonRes['origin'] = post['origin_post_url']
+      formedJsonRes['source'] = request.build_absolute_uri() + post_id
+    if post['origin_post_url']:
+      formedJsonRes['origin'] = post['origin_post_url']
+    else:
+      formedJsonRes['origin'] = request.build_absolute_uri() + post_id
     formedJsonRes['description'] = post['description']
     formedJsonRes['contentType'] = post['contentType']
     formedJsonRes['content'] = post['content']
 
-    # TODO: make author needed
-    if 'author' in post.keys():
-      formedJsonRes['author'] = post['author']
-    else:
-      formedJsonRes['author'] = ''
+    formedJsonRes['author'] = getAuthorJsonById(author_id).data
     formedJsonRes['categories'] = post['categories']
     if 'count' in post.keys():
       formedJsonRes['count'] = post['count']
