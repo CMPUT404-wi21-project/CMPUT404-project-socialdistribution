@@ -11,8 +11,6 @@ import PaginationModal from '../components/post/PaginationModal';
 
 import { getCurAuthorPosts } from '../actions/postActions';
 
-let listData = [];
-
 const IconText = ({ icon, text }) => (
   <span>
     {React.createElement(icon, { style: { marginRight: 8 } })}
@@ -24,17 +22,37 @@ class myPostsPage extends React.Component {
   constructor(props){
     super(props);
     this.addPostsIntoList = this.addPostsIntoList.bind(this);
+    this.isUpdated = true;
+    this.state = {posts: []};
   }
 
   componentDidMount = () =>{
+    // get posts when render the component
     this.props.getCurAuthorPosts();
-    listData = []
-    this.addPostsIntoList(this.props.post);
+  }
+
+  componentDidUpdate = () => {
+    if (this.props.isLoading){
+      this.isUpdated = false;
+    }
+
+    // grab posts when new post is created
+    if (!this.props.isLoading && !this.isUpdated && this.state.posts.length == this.props.posts.length){
+      // give 1 second for backend server to update
+      setTimeout(() => { }, 1000);
+      this.props.getCurAuthorPosts();
+    }
+    // rerender when posts is updated
+    if (!this.props.isLoading && this.state.posts.length != this.props.posts.length){
+      this.addPostsIntoList(this.props.posts);
+      this.isUpdated = true;
+    }
   }
 
   addPostsIntoList = (posts) => {
+    let dataList = []
     for (let i = 0; i < posts.length; i++) {
-      listData.push({
+      dataList.push({
         author: `${posts[i]['author']['displayName']}`,
         href: `${posts[i]['id']}`,
         title: `${posts[i]['title']}`,
@@ -45,6 +63,7 @@ class myPostsPage extends React.Component {
         `${posts[i]['content']}`,
       });
     }
+    this.setState({posts: dataList});
   }
 
   render() {
@@ -60,7 +79,7 @@ class myPostsPage extends React.Component {
           <List
             itemLayout="vertical"
             size="large"
-            dataSource={listData}
+            dataSource={this.state.posts}
             renderItem={item => (
               <List.Item
                 key={item.title}
@@ -96,7 +115,8 @@ class myPostsPage extends React.Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
-  post: state.post.posts,
+  posts: state.post.posts,
+  isLoading: state.post.isLoading,
 });
 
 export default connect(mapStateToProps, {getCurAuthorPosts})(myPostsPage);

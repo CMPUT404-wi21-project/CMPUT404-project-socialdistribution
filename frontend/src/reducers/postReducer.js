@@ -6,13 +6,15 @@ import {
     CREATE_POST_SUCCESS,
     GET_AUTHOR_POSTS,
     GET_AUTHOR_POST_SUCCESS,
-    GET_AUTHOR_POST_FAIL
+    GET_AUTHOR_POST_FAIL,
+    LOGOUT_SUCCESS,
 } from '../actions/types';
 
 // NOTE: This state is very temporary, whoever expands on posts should feel free to change it
 const initialState = {
     cachedPosts: {},
-    isLoading: false,
+    posts: {},
+    isLoading: true,
     createError: false,
     editError: false,
     deleteError: false,
@@ -60,6 +62,24 @@ export default function(state = initialState, action) {
                 deleteError: false,
                 editError: false,
                 getError: false, 
+            }
+        }
+        case GET_AUTHOR_POSTS:{
+            return{
+                ...state,
+                isLoading: true,
+            }
+        }
+        case LOGOUT_SUCCESS:{
+            localStorage.clear();
+            return{
+                cachedPosts: {},
+                posts: {},
+                isLoading: false,
+                createError: false,
+                editError: false,
+                deleteError: false,
+                getError: false,
             }
         }
         default:
