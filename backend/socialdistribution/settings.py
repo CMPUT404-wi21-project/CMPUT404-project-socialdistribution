@@ -13,6 +13,7 @@ import os
 import dj_database_url
 import django_heroku
 import psycopg2
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -189,3 +190,9 @@ if PROD:
     django_heroku.settings(locals())
     options = DATABASES['default'].get('OPTIONS', {})
     options.pop('sslmode', None)
+
+# longer access key life time
+if not os.environ.get('DEBUG'):
+    SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=600),
+    }

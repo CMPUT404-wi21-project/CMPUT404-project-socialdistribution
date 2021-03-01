@@ -20,4 +20,4 @@ class Author(AbstractUser):
     url     = models.URLField()
 
     # Github Connect
-    git_url = models.URLField()
+    github = models.URLField()

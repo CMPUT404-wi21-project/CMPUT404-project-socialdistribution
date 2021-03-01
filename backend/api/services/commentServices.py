@@ -77,10 +77,12 @@ class commentServices():
             comments = Comment.objects.filter(post_id__exact=post_id)
             
             # Get pagination query items
+            pageSize = request.GET.get('size', 5)
+            pageNum = request.GET.get('page', 1)
             res = commentServices.getPaginatedComments(request, 
                                                        comments, 
-                                                       request.GET.get('size'),
-                                                       request.GET.get('page'))
+                                                       pageSize,
+                                                       pageNum)
             return Response(res, status=HTTP_200_OK)
             
 
