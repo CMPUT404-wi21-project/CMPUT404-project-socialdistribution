@@ -36,3 +36,6 @@ class Comment(models.Model):
     
     # Full url of this comment
     url         = models.URLField()
+
+    def __str__(self):
+        return f"Post:{self.post_id}, Author:{self.C_author_id},ContentType:{self.contentType},content: {self.content}"
