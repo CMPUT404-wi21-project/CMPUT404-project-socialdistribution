@@ -4,7 +4,7 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 
 import {connect} from 'react-redux';
 import Logout from '../components/auth/Logout';
-import { InboxOutlined, UserOutlined  } from '@ant-design/icons';
+import { InboxOutlined, UserOutlined, ContainerOutlined} from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -27,6 +27,11 @@ const authenticatedMenu = () => {
                             <InboxOutlined/>
                             <span>Inbox</span>
                             <Link to="/Inbox" />
+                    </Menu.Item>
+                    <Menu.Item key="4" style={{float: "right"}}>
+                            <ContainerOutlined/>
+                            <span>MyPosts</span>
+                            <Link to="/MyPosts" />
                     </Menu.Item>
                 </Menu>
     );

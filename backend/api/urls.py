@@ -8,11 +8,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 # vise versa
 urlpatterns = [
     path('', index.index, name="index"),
+    path(r'author/<str:author_id>/posts/', simplePostView.handlePostByAuthorId, name="handle-posts-view"),
+    path(r'author/<str:author_id>/posts/<str:post_id>', simplePostView.handlePostByPostId, name="handle-single-post-view"),
     path(r'author/register/', simpleSignupRequestView.createSignupRequest, name="register-author"),
     path('author/login/', authView.LoginView.as_view(), name="login"),
     path('author/<str:id>/', author.author_profile_api, name="author-profile"),
-    path(r'author/<str:author_id>/posts/', simplePostView.createNewPost, name="post-post-view"),
-    path(r'author/<str:author_id>/posts/<str:post_id>', simplePostView.handleExistPost, name="get-post-view"),
     path('api-auth/', include('rest_framework.urls')),    
     path('api/token/', TokenObtainPairView.as_view()),    
     path('api/token/refresh/', TokenRefreshView.as_view()),

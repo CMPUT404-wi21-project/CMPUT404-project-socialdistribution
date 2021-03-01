@@ -13,7 +13,7 @@ import json
 class PostSerializer(serializers.ModelSerializer):
   class Meta:
     model = post.Post
-    fields = ['title', 'author_id', 'description', 'content', 'contentType', 'visibility', 'categories']
+    fields = ['title', 'description', 'content', 'contentType', 'visibility', 'categories', 'author_id']
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

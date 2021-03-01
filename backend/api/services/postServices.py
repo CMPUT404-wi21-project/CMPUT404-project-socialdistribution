@@ -8,7 +8,8 @@ import json, sys
 
 class postServices():
   @staticmethod
-  def creatNewPost(request):
+  def creatNewPost(request, author_id):
+    request.data['author_id'] = author_id
     serializer = PostSerializer(data=request.data)
     if serializer.is_valid():
       postInstance = serializer.save()
@@ -27,11 +28,10 @@ class postServices():
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
   @staticmethod
-  def getPostById(request, post_id, author_id=None):
-    data = post.Post.objects.all()
+  def getPostByPostId(request, post_id, author_id=None):
     # try to filter for such post
     try:
-      data = data.filter(post_id__exact=post_id)
+      data = post.Post.objects.filter(post_id__exact=post_id)
       data = serializers.serialize('json', data)
       data = json.loads(data)[0]['fields']
       data['post_id'] = post_id
@@ -44,3 +44,78 @@ class postServices():
       return Response(data)
     else:
       return Response(status=status.HTTP_404_NOT_FOUND)
+
+  @staticmethod
+  def getPostByAuthorId(request, author_id):
+    # try to filter for such post
+    try:
+      data = post.Post.objects.filter(author_id__exact=author_id)
+      data = serializers.serialize('json', data)
+      data = json.loads(data)
+      data = sorted(data, key=lambda d: d['fields']["published"], reverse=True)
+      for i in range(len(data)):
+        data[i] = data[i]['fields']
+      return Response(data)
+    except:
+      return Response(status=status.HTTP_404_NOT_FOUND)
+
+  #############################################
+  # get paginated and formatted post json objects
+  #
+  # input:
+  # res, not paginated json response
+  # pageNum: the page number the user want to view
+  #
+  # output:
+  # paginated post json objects
+  ##############################################
+  @staticmethod
+  def getPaginatedPosts(res, pageNum):
+    data = res.data
+    pageSize = 50
+    pasgedData = data[pageSize * pageNum: pageSize * (pageNum+1)]
+    return Response(pasgedData)
+
+  ##############################################
+  # format the raw json into formatted desired json response
+  # input:
+  # request, http request
+  # res: not formed response
+  #
+  # return: formatted json response
+  #################################################
+  def formatJSONpost(request, post):
+
+    formedJsonRes = {}
+    formedJsonRes['type'] = 'post'
+    formedJsonRes['title'] = post['title']
+    formedJsonRes['id'] = request.build_absolute_uri()
+    if 'source' in post.keys():
+      formedJsonRes['source'] = post['source']
+    else:
+      formedJsonRes['source'] = ''
+    formedJsonRes['origin'] = post['origin_post_url']
+    formedJsonRes['description'] = post['description']
+    formedJsonRes['contentType'] = post['contentType']
+    formedJsonRes['content'] = post['content']
+
+    # TODO: make author needed
+    if 'author' in post.keys():
+      formedJsonRes['author'] = post['author']
+    else:
+      formedJsonRes['author'] = ''
+    formedJsonRes['categories'] = post['categories']
+    if 'count' in post.keys():
+      formedJsonRes['count'] = post['count']
+    else:
+      formedJsonRes['count'] = 0
+    formedJsonRes['size'] = 50
+    if 'comments' in post.keys():
+      formedJsonRes['comments'] = post['comments']
+    else:
+      formedJsonRes['comments'] = ''
+    formedJsonRes['published'] = post['published']
+    formedJsonRes['visibility'] = post['visibility']
+    formedJsonRes['unlisted'] = post['unlisted']
+
+    return Response(formedJsonRes)
