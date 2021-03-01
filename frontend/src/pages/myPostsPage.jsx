@@ -36,11 +36,21 @@ class myPostsPage extends React.Component {
       this.isUpdated = false;
     }
 
-    // grab posts when new post is created
-    if (!this.props.isLoading && !this.isUpdated && this.state.posts.length == this.props.posts.length){
-      // give 1 second for backend server to update
-      setTimeout(() => { }, 1000);
-      this.props.getCurAuthorPosts();
+    // when there are posts exist
+    if (this.props.posts.length !== 0){
+      // grab posts when new post is created
+      if (!this.props.isLoading && !this.isUpdated && this.state.posts.length == this.props.posts.length){
+        // give 1 second for backend server to update
+        setTimeout(() => { }, 1000);
+        this.props.getCurAuthorPosts();
+      }
+    }
+    else{
+      // when first post is getting added
+      if (this.props.postsCreated){
+        setTimeout(() => { }, 1000);
+        this.props.getCurAuthorPosts();
+      }
     }
     // rerender when posts is updated
     if (!this.props.isLoading && this.state.posts.length != this.props.posts.length){
@@ -80,9 +90,11 @@ class myPostsPage extends React.Component {
             itemLayout="vertical"
             size="large"
             dataSource={this.state.posts}
+            style={{marginLeft: 'auto', marginRight: 'auto', height:'80%', width:'80%'}}
             renderItem={item => (
               <List.Item
                 key={item.title}
+                style={{borderColor: '#eee #ddd #bbb', maxWidth: '80%', backgroundColor: 'white', marginLeft: 'auto', marginRight: 'auto'}}
                 actions={
                   [
                     <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
@@ -94,17 +106,18 @@ class myPostsPage extends React.Component {
                 <Skeleton loading={false} active avatar>
                   <List.Item.Meta
                     avatar={<Avatar src={item.avatar} />}
-                    title={<a href={item.href}>{item.title}</a>}
-                    description={item.description}
+                    title={<div style={{textAlign: 'left'}}><a href={item.href}>{item.title}</a> </div>}
+                    description={<div style={{textAlign:'left'}}>{item.author + ':  '}{item.description}</div>}
                   />
-                  {item.author} <br/>
+                  <div style={{textAlign: 'left', marginTop: '10px'}}>
                   {item.content}
+                  </div>
                 </Skeleton>
               </List.Item>
             )}
           />
         </>
-        <Row style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+        <Row style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px"}}>
           <PaginationModal/>
         </Row>
     </>
@@ -117,6 +130,7 @@ const mapStateToProps = state => ({
   error: state.error,
   posts: state.post.posts,
   isLoading: state.post.isLoading,
+  postsCreated: state.post.postsCreated,
 });
 
 export default connect(mapStateToProps, {getCurAuthorPosts})(myPostsPage);

@@ -19,6 +19,7 @@ const initialState = {
     editError: false,
     deleteError: false,
     getError: false,
+    postsCreated: false,
 }
 
 
@@ -41,7 +42,7 @@ export default function(state = initialState, action) {
                 deleteError: false,
                 editError: false,
                 getError: false,
-
+                postsCreated: true,
             }
         case CREATE_POST_FAIL:
             return {
