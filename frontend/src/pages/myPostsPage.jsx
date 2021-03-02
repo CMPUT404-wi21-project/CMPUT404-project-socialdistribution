@@ -61,6 +61,18 @@ class myPostsPage extends React.Component {
     }
   }
 
+
+  renderSwitch(contentType, content) {
+        switch (contentType) {
+            case 'text/plain':
+                return content;
+            case 'text/markdown':
+                return <ReactMarkdown plugins={[gfm]} children={content} />;
+            default:
+                return content;
+        }
+  }
+
   addPostsIntoList = (posts) => {
     let dataList = [];
     for (let i = 0; i < posts.length; i++) {
@@ -117,7 +129,7 @@ class myPostsPage extends React.Component {
                     description={<div style={{textAlign:'left'}}>{item.author + ':  '}{item.description}</div>}
                   />
                   <div style={{textAlign: 'left', marginTop: '10px'}}>
-                  {(item.contentType == 'text/plain') ? item.content : <ReactMarkdown plugins={[gfm]} children={item.content} />}
+                  {this.renderSwitch(item.contentType, item.content)}
                   </div>
                 </Skeleton>
               </List.Item>
