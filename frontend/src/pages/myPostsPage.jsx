@@ -5,6 +5,8 @@ import {Row, Col, Button} from 'antd';
 import { Skeleton, Switch, List, Avatar } from 'antd';
 import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 
+import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm'
 
 import CreatePostModal from '../components/post/CreatePostModal';
 import PaginationModal from '../components/post/PaginationModal';
@@ -60,7 +62,7 @@ class myPostsPage extends React.Component {
   }
 
   addPostsIntoList = (posts) => {
-    let dataList = []
+    let dataList = [];
     for (let i = 0; i < posts.length; i++) {
       dataList.push({
         author: `${posts[i]['author']['displayName']}`,
@@ -71,6 +73,8 @@ class myPostsPage extends React.Component {
         `${posts[i]['description']}`,
         content:
         `${posts[i]['content']}`,
+        contentType: `${posts[i]['contentType']}`,
+        index: i
       });
     }
     this.setState({posts: dataList});
@@ -93,7 +97,7 @@ class myPostsPage extends React.Component {
             style={{marginLeft: 'auto', marginRight: 'auto', height:'80%', width:'80%'}}
             renderItem={item => (
               <List.Item
-                key={item.title}
+                key={item.index}
                 style={{borderColor: '#eee #ddd #bbb', maxWidth: '80%', backgroundColor: 'white', marginLeft: 'auto', marginRight: 'auto'}}
                 actions={
                   [
@@ -110,7 +114,7 @@ class myPostsPage extends React.Component {
                     description={<div style={{textAlign:'left'}}>{item.author + ':  '}{item.description}</div>}
                   />
                   <div style={{textAlign: 'left', marginTop: '10px'}}>
-                  {item.content}
+                  {(item.contentType == 'text/plain') ? item.content : <ReactMarkdown plugins={[gfm]} children={item.content} />}
                   </div>
                 </Skeleton>
               </List.Item>
