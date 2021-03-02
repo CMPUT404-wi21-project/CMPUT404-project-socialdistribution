@@ -15,7 +15,12 @@ def getAuthor(request):
     # to whom the token was assigned
     return authServices.getCurrentAuthor(request)
 
-# Custom request for login that works off simplejwt
+
+"""
+This view overwrites the django rest simplejwt View.
+This has been overwritten for the login operation so that in addition to returning a token,
+it returned the user as well. This user information is important for the Frontend to maintain state.
+"""
 class LoginView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
