@@ -28,12 +28,12 @@ urlpatterns = [
     path('api/author/current/', authView.getAuthor, name="get-current-author"),
 
     # Comment Endpoints
-    path('author/<str:author_id>/posts/<str:post_id>/comments', commentView.handleComments), # GET/POST
+    path('author/<str:author_id>/posts/<str:post_id>/comments', commentView.handleComments, name='comments'), # GET/POST
 
     # Like and Liked Endpoints
-    path('author/<str:author_id>/inbox', likeView.sendToAuthorInbox), # POST
-    path('author/<str:author_id>/posts/<str:post_id>/likes', likeView.getLikesForPost), # GET
-    path('author/<str:author_id>/posts/<str:post_id>/comments/<str:comment_id>/likes', likeView.getLikesForComment), # GET
-    path('author/<str:author_id>/liked', likeView.getLikedForAuthor), # GET
+    path('author/<str:author_id>/inbox', likeView.sendToAuthorInbox, name='create-like-send-to-inbox'), # POST
+    path('author/<str:author_id>/posts/<str:post_id>/likes', likeView.getLikesForPost, name='get-likes-for-post'), # GET
+    path('author/<str:author_id>/posts/<str:post_id>/comments/<str:comment_id>/likes', likeView.getLikesForComment, name='get-likes-for-comment'), # GET
+    path('author/<str:author_id>/liked', likeView.getLikedForAuthor, name='get-liked-by-author'), # GET
 ]
 
