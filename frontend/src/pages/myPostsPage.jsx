@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Row, Col, Button} from 'antd';
-import { Skeleton, Switch, List, Avatar } from 'antd';
+import { Skeleton, Switch, List, Avatar, Space, Spin } from 'antd';
 import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 
 import ReactMarkdown from 'react-markdown'
@@ -90,7 +90,10 @@ class myPostsPage extends React.Component {
           <CreatePostModal/>
         </Row>
         <>
-          <List
+        {this.props.isLoading?(<Space size="middle">
+            <Spin size="large" />
+          </Space>):(
+            <List
             itemLayout="vertical"
             size="large"
             dataSource={this.state.posts}
@@ -120,6 +123,8 @@ class myPostsPage extends React.Component {
               </List.Item>
             )}
           />
+
+          )}
         </>
         <Row style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px"}}>
           <PaginationModal/>
