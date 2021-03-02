@@ -7,6 +7,7 @@ import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 
 
 import CreatePostModal from '../components/post/CreatePostModal';
+import EditPostModal from '../components/post/EditPostModal';
 import PaginationModal from '../components/post/PaginationModal';
 
 import { getCurAuthorPosts } from '../actions/postActions';
@@ -71,12 +72,24 @@ class myPostsPage extends React.Component {
         `${posts[i]['description']}`,
         content:
         `${posts[i]['content']}`,
+        visibility:
+        `${posts[i]['visibility']}`,
+        unlisted:
+        `${posts[i]['unlisted']}`,
+        categories:
+        `${posts[i]['categories']}`,
+        contentType:
+        `${posts[i]['contentType']}`,
+        content:
+        `${posts[i]['content']}`,
+
       });
     }
     this.setState({posts: dataList});
   }
 
   render() {
+    console.log(this.state.posts)
     if (!this.props.isAuthenticated) {
         return <Redirect to="/"/>
     }
@@ -110,8 +123,24 @@ class myPostsPage extends React.Component {
                     description={<div style={{textAlign:'left'}}>{item.author + ':  '}{item.description}</div>}
                   />
                   <div style={{textAlign: 'left', marginTop: '10px'}}>
-                  {item.content}
+                  {item.contentType==="image/png;base64" || item.contentType==="image/jpeg;base64"?
+                  <img src={item.content} height="80%" width="80%"></img>:item.content}
                   </div>
+                  <Row style={{margin: "2%"}}>
+                    <EditPostModal 
+                    text="Edit Post"
+                    initialValues={{
+                      title:item.title, 
+                      description:item.description,
+                      visibility:item.visibility,
+                      unlisted:item.unlisted == 'true',
+                      categories:JSON.parse(item.categories),
+                      contentType:item.contentType,
+                      content:item.content,
+                      id:item.href.split("/").pop()
+                    }}
+                    />
+                   </Row>
                 </Skeleton>
               </List.Item>
             )}

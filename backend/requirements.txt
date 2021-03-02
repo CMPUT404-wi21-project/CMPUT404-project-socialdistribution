@@ -7,4 +7,4 @@ django-heroku
 gunicorn==20.0.4
 djangorestframework_simplejwt
 django-cors-headers==3.5.0
-
+requests==2.25.1

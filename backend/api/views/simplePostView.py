@@ -56,12 +56,15 @@ def getPostsByAuthorId(request, author_id, pageNum = 0):
 #
 # return query result in json list
 ################################################
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'POST'])
 def handlePostByPostId(request, author_id, post_id):
   try:
     if request.method == 'GET':
       # make sure author id matches
       res = getPost(request, author_id, post_id)
+      return res
+    elif request.method == 'POST':
+      res = editPost(request, author_id, post_id)
       return res
 
   except AssertionError:
@@ -75,6 +78,11 @@ def getPost(request, author_id, post_id):
   formatedRes = postServices.formatJSONpost(request, res.data, author_id)
   return formatedRes
 
+
+def editPost(request, author_id, post_id):
+  res = postServices.editPostById(request, post_id, author_id)
+  return res
+  
 # method for same link goes down to here
 # post, delete, put
 

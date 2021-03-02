@@ -4,7 +4,7 @@ import { Modal, Button, Form, Input, Radio, Select, Switch, Alert, Upload } from
 import { PlusOutlined, MinusCircleOutlined  } from '@ant-design/icons';
 
 // Import actions
-import {createPost} from '../../actions/postActions';
+import {editPost} from '../../actions/postActions';
 import {clearErrors} from '../../actions/errorActions';
 
 const plaintextFormItem = () => (
@@ -39,7 +39,6 @@ class CreatePostModal extends React.Component {
         type: "text/plain",
         msg: null,
         image: null,
-        imageFrom: null,
     }
 
 
@@ -158,7 +157,8 @@ class CreatePostModal extends React.Component {
         if (values.contentType==="image/png;base64" || values.contentType==="image/jpeg;base64"){
             values.content = this.state.image;
         }
-        this.props.createPost(values); 
+        this.props.editPost(values, this.props.initialValues.id); 
+        window.location.reload(false)
     }
      
     // Update the content type in the state to ensure we show relevant information in the form
@@ -174,13 +174,12 @@ class CreatePostModal extends React.Component {
         return (
             <>
                 <Button type="primary" 
-                        icon={<PlusOutlined />} 
                         size="large"
                         onClick={this.showModal}>
-                    Create Post  
+                    Edit Post
                 </Button>
                 <Modal
-                    title="Create Post"
+                    title="Edit Post"
                     visible={this.state.visible}
                     okText="Submit"
                     onCancel={this.handleCancel}
@@ -192,7 +191,7 @@ class CreatePostModal extends React.Component {
                     <Form layout="vertical" 
                           id="create-post-form"
                           onFinish={this.onFinish}
-                          initialValues={{contentType: this.state.type}}
+                          initialValues={this.props.initialValues?this.props.initialValues:{contentType: this.state.type}}
                     >
                         {this.state.msg? <Alert message={this.state.msg} type="error" />: null}
                         <Form.Item 
@@ -273,4 +272,4 @@ const mapStateToProps = state => ({
     isLoading: state.post.isLoading,
     createError: state.post.createError,
 });
-export default connect(mapStateToProps, {createPost, clearErrors})(CreatePostModal);
+export default connect(mapStateToProps, {editPost, clearErrors})(CreatePostModal);
