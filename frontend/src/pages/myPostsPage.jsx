@@ -24,7 +24,10 @@ class myPostsPage extends React.Component {
   constructor(props){
     super(props);
     this.addPostsIntoList = this.addPostsIntoList.bind(this);
+    this.getEditedIndex = this.getEditedIndex.bind(this);
     this.state = {posts: []};
+    this.state1 = {posts: []};
+    this.editedIndex = -1;
   }
 
   componentDidMount = () =>{
@@ -37,12 +40,14 @@ class myPostsPage extends React.Component {
       this.props.getCurAuthorPosts();
     }
 
-    if (this.props.postsEdited){
-      this.props.getCurAuthorPosts();
-    }
-
     if (!this.props.isLoading && this.state.posts.length != this.props.posts.length){
       this.addPostsIntoList(this.props.posts);
+    }
+
+    const isEdited = (JSON.stringify(this.props.posts[this.editedIndex]) !== JSON.stringify(this.state1.posts[this.editedIndex]))
+    if (!this.props.isLoading && this.editedIndex != -1 && isEdited){
+      this.addPostsIntoList(this.props.posts);
+      this.editedIndex = -1;
     }
   }
 
@@ -62,7 +67,12 @@ class myPostsPage extends React.Component {
         }
   }
 
+  getEditedIndex = (index) =>{
+    this.editedIndex = index;
+  }
+
   addPostsIntoList = (posts) => {
+    this.state1.posts = posts;
     let dataList = [];
     for (let i = 0; i < posts.length; i++) {
       dataList.push({
@@ -143,13 +153,13 @@ class myPostsPage extends React.Component {
                       categories:JSON.parse(item.categories),
                       contentType:item.contentType,
                       content:item.contentType==="text/plain"||item.contentType==="text/markdown"?item.content:null,
-                      
                       id:item.href.split("/").pop()
                     }}
                     contentType={item.contentType}
                     image={item.contentType==="image/jpeg;base64"||item.contentType==="image/png;base64"?item.content:null}
                     hasInitImage={item.contentType==="image/jpeg;base64"||item.contentType==="image/png;base64"?true:false}
                     index={item.index}
+                    getEditedIndex = {this.getEditedIndex}
                     />
                    </Row>
                 </Skeleton>
@@ -173,8 +183,6 @@ const mapStateToProps = state => ({
   posts: state.post.posts,
   isLoading: state.post.isLoading,
   postsCreated: state.post.postsCreated,
-  postsEdited: state.post.postsEdited,
-  editPostDone: state.post.editPostDone,
 });
 
 export default connect(mapStateToProps, {getCurAuthorPosts})(myPostsPage);

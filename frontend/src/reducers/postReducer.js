@@ -23,8 +23,6 @@ const initialState = {
     deleteError: false,
     getError: false,
     postsCreated: false,
-    postsEdited: false,
-    editPostDone: false,
 }
 
 
@@ -76,8 +74,7 @@ export default function(state = initialState, action) {
                 deleteError: false,
                 editError: false,
                 getError: false,
-                postsEdited: true,
-                editPostDone: true,
+                postsCreated: true,
             }
         case EDIT_POST_FAIL:
             return {
@@ -99,7 +96,6 @@ export default function(state = initialState, action) {
                 editError: false,
                 getError: false,
                 postsCreated: false,
-                postsEdited: false,
             }
         }
         case GET_AUTHOR_POSTS:{
