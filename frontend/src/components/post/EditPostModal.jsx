@@ -158,8 +158,8 @@ class CreatePostModal extends React.Component {
         if (values.contentType==="image/png;base64" || values.contentType==="image/jpeg;base64"){
             values.content = this.state.image;
         }
-        this.props.editPost(values, this.props.initialValues.id); 
-        this.props.postsEdited=true;
+        this.props.editPost(values, this.props.initialValues.id);
+        this.props.getEditedIndex(this.props.index)
     }
      
     // Update the content type in the state to ensure we show relevant information in the form
