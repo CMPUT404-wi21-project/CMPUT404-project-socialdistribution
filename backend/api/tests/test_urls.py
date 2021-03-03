@@ -45,7 +45,7 @@ class TestUrls(TestCase):
         url = reverse('get-likes-for-comment', args=['author_id', 'post_id', 'comment_id'])
         self.assertEqual(resolve(url).func, likeView.getLikesForComment)
 
-    def test_get_liked_for_author(self):
+    def test_get_liked_for_author_url_resolves(self):
         url = reverse('get-liked-by-author', args=['author_id'])
         self.assertEqual(resolve(url).func, likeView.getLikedForAuthor)
 
