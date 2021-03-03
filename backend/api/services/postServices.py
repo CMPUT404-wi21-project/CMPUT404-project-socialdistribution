@@ -16,11 +16,13 @@ class postServices():
       postInstance = serializer.save()
       # set url for created post model
       postInstance.url = request.build_absolute_uri() + str(postInstance.post_id)
+
+      # convert image from url to base64 (if content is an image link)
       if (postInstance.contentType.startswith("image/")):
           url = postInstance.content
           base64Content = base64.b64encode(requests.get(url).content).decode("utf-8")
-          
           postInstance.content = "data:" + postInstance.contentType + "," + base64Content
+
       postInstance.save()
         
       serialized_post = json.loads(serializers.serialize('json', [postInstance]))
@@ -39,8 +41,6 @@ class postServices():
 
     body = request.body.decode('utf-8')
     body = json.loads(body)
-    print("\n\n")
-    print(body)
 
     try:
       # update post
@@ -49,7 +49,17 @@ class postServices():
 
         setattr(data, key_of_update, value_of_update)
       data.save()
-      return Response(status=status.HTTP_200_OK)
+
+      serialized_post = json.loads(serializers.serialize('json', [data]))
+      data = serialized_post[0]['fields']
+      data['post_id'] = serialized_post[0]['pk']
+      
+      # Send the created post back to the user in case they need to use it immediately on the frontend
+      res = Response(status=status.HTTP_200_OK)
+      res.data = data
+      return res
+
+      # return Response(status=status.HTTP_200_OK)
 
     except:
       return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -86,7 +86,6 @@ class CreatePostModal extends React.Component {
       }
     
     getImageUrl = async (e)=>  {
-        console.log(e.target.value)
         this.setState(({image:e.target.value}))
     }
     

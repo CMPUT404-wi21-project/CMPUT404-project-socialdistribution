@@ -36,9 +36,11 @@ class CreatePostModal extends React.Component {
         confirmLoading: false,
         content: "",
         categories: {},
-        type: "text/plain",
+        type: this.props.contentType,
         msg: null,
-        image: null,
+        image: this.props.image,
+        hasInitImage: this.props.hasInitImage,
+        updateImage: "update",
     }
 
 
@@ -158,7 +160,7 @@ class CreatePostModal extends React.Component {
             values.content = this.state.image;
         }
         this.props.editPost(values, this.props.initialValues.id); 
-        window.location.reload(false)
+        // window.location.reload(false)
     }
      
     // Update the content type in the state to ensure we show relevant information in the form
@@ -168,6 +170,11 @@ class CreatePostModal extends React.Component {
 
     imageFromChange = e => {
         this.setState({imageFrom: e.target.value});
+    }
+
+    updateImageChange = e => {
+        this.setState({updateImage: e.target.value});
+        this.setState({hasInitImage: false});
     }
 
     render()  {
@@ -186,7 +193,7 @@ class CreatePostModal extends React.Component {
                     okButtonProps={{form: 'create-post-form', key:'submit', htmlType:'submit'}}
                     destroyOnClose={true}
                     confirmLoading={this.props.isLoading}
-                    o
+                    onOk={() => this.setState(({visible:false}))}
                     >
                     <Form layout="vertical" 
                           id="create-post-form"
@@ -246,7 +253,16 @@ class CreatePostModal extends React.Component {
                                   )}
                             </Form.List>
                         </Form.Item>
-                        <Form.Item name="contentType" label="Type">
+
+                    {this.state.image?
+                    <Radio.Group onChange={this.updateImageChange} name="updateIamge">
+                    <Radio.Button value="update">Update An New Image</Radio.Button>
+                    <Radio.Button value="keep">Keep The Original Image</Radio.Button>
+                    </Radio.Group>
+                    :null}
+
+                    {this.state.updateImage=="update" && !this.state.hasInitImage?
+                        <div><Form.Item name="contentType" label="Type">
                             <Radio.Group onChange={this.postTypeChange} name="contentType">
                                 <Radio.Button value="text/plain">Plaintext</Radio.Button>
                                 <Radio.Button value="text/markdown">Markdown</Radio.Button>
@@ -255,10 +271,13 @@ class CreatePostModal extends React.Component {
                                 <Radio.Button value="image/png;base64">PNG</Radio.Button>
                             </Radio.Group>
                         </Form.Item>
-                    {this.state.type == "text/plain"?plaintextFormItem():null}
-                    {this.state.type == "text/markdown"?markdownFormItem():null}
-                    {this.state.type == "image/jpeg;base64"?this.jpegFormItem():null}
-                    {this.state.type == "image/png;base64"?this.pngFormItem():null}
+                        {this.state.type == "text/plain"?plaintextFormItem():null}
+                        {this.state.type == "text/markdown"?markdownFormItem():null}
+                        {this.state.type == "image/jpeg;base64"?this.jpegFormItem():null}
+                        {this.state.type == "image/png;base64"?this.pngFormItem():null}
+                        </div>:null}
+                    
+                    
                     </Form>
                 </Modal>
             </>

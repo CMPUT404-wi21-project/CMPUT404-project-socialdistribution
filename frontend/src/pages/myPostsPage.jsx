@@ -82,14 +82,13 @@ class myPostsPage extends React.Component {
         `${posts[i]['contentType']}`,
         content:
         `${posts[i]['content']}`,
-
+        image: null,
       });
     }
     this.setState({posts: dataList});
   }
 
   render() {
-    console.log(this.state.posts)
     if (!this.props.isAuthenticated) {
         return <Redirect to="/"/>
     }
@@ -124,7 +123,10 @@ class myPostsPage extends React.Component {
                   />
                   <div style={{textAlign: 'left', marginTop: '10px'}}>
                   {item.contentType==="image/png;base64" || item.contentType==="image/jpeg;base64"?
-                  <img src={item.content} height="80%" width="80%"></img>:item.content}
+                      <img src={item.content} width="300px">
+                      </img>:null}
+                  {item.contentType==="text/plain" || item.contentType==="text/markdown"?
+                      item.content:null}
                   </div>
                   <Row style={{margin: "2%"}}>
                     <EditPostModal 
@@ -136,9 +138,13 @@ class myPostsPage extends React.Component {
                       unlisted:item.unlisted == 'true',
                       categories:JSON.parse(item.categories),
                       contentType:item.contentType,
-                      content:item.content,
+                      content:item.contentType==="text/plain"||item.contentType==="text/markdown"?item.content:null,
+                      
                       id:item.href.split("/").pop()
                     }}
+                    contentType={item.contentType}
+                    image={item.contentType==="image/jpeg;base64"||item.contentType==="image/png;base64"?item.content:null}
+                    hasInitImage={item.contentType==="image/jpeg;base64"||item.contentType==="image/png;base64"?true:false}
                     />
                    </Row>
                 </Skeleton>
