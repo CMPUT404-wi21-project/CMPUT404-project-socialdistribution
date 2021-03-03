@@ -56,13 +56,17 @@ def getPostsByAuthorId(request, author_id, pageNum = 0):
 #
 # return query result in json list
 ################################################
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'POST', 'DELETE'])
 def handlePostByPostId(request, author_id, post_id):
   try:
     if request.method == 'GET':
       # make sure author id matches
       res = getPost(request, author_id, post_id)
       return res
+    elif request.method == 'POST':
+      res = editPost(request, author_id, post_id)
+      return res
+      
     elif request.method == 'DELETE':
       res = deletePost(request, author_id, post_id)
       return res
@@ -86,6 +90,10 @@ def getPost(request, author_id, post_id):
   return formatedRes
 
 
+def editPost(request, author_id, post_id):
+  res = postServices.editPostById(request, post_id, author_id)
+  return res
+  
 def deletePost(request, author_id, post_id):
   res = postServices.deletePostByPostId(request, author_id, post_id)
   return res

@@ -25,6 +25,9 @@ export const DELETE_POST_FAIL           = "DELETE_POST_FAIL";
 export const CREATE_POST                = "CREATE_POST";
 export const CREATE_POST_SUCCESS        = "CREATE_POST_SUCCESS";
 export const CREATE_POST_FAIL           = "CREATE_POST_FAIL";
+export const EDIT_POST                  = "EDIT_POST"
+export const EDIT_POST_SUCCESS          = "EDIT_POST_SUCCESS";
+export const EDIT_POST_FAIL             = "EDIT_POST_FAIL";
 
 // PROFILE TYPES
 export const PROFILE_LOADING        = "PROFILE_LOADING";

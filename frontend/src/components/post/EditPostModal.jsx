@@ -4,7 +4,7 @@ import { Modal, Button, Form, Input, Radio, Select, Switch, Alert, Upload } from
 import { PlusOutlined, MinusCircleOutlined  } from '@ant-design/icons';
 
 // Import actions
-import {createPost} from '../../actions/postActions';
+import {editPost} from '../../actions/postActions';
 import {clearErrors} from '../../actions/errorActions';
 
 const plaintextFormItem = () => (
@@ -36,10 +36,12 @@ class CreatePostModal extends React.Component {
         confirmLoading: false,
         content: "",
         categories: {},
-        type: "text/plain",
+        type: this.props.contentType,
         msg: null,
-        image: null,
-        imageFrom: null,
+        image: this.props.image,
+        hasInitImage: this.props.hasInitImage,
+        updateImage: "update",
+        index: this.props.index,
     }
 
 
@@ -79,7 +81,6 @@ class CreatePostModal extends React.Component {
             this.setState(({image:reader.result}))
           };
           reader.onerror = (err) => {
-            console.log(err);
             this.setState({msg: err}); 
           };
         }
@@ -157,7 +158,8 @@ class CreatePostModal extends React.Component {
         if (values.contentType==="image/png;base64" || values.contentType==="image/jpeg;base64"){
             values.content = this.state.image;
         }
-        this.props.createPost(values); 
+        this.props.editPost(values, this.props.initialValues.id); 
+        this.props.postsEdited=true;
     }
      
     // Update the content type in the state to ensure we show relevant information in the form
@@ -169,29 +171,33 @@ class CreatePostModal extends React.Component {
         this.setState({imageFrom: e.target.value});
     }
 
+    updateImageChange = e => {
+        this.setState({updateImage: e.target.value});
+        this.setState({hasInitImage: false});
+    }
+
     render()  {
         return (
             <>
                 <Button type="primary" 
-                        icon={<PlusOutlined />} 
                         size="large"
                         onClick={this.showModal}>
-                    Create Post  
+                    Edit Post
                 </Button>
                 <Modal
-                    title="Create Post"
+                    title="Edit Post"
                     visible={this.state.visible}
                     okText="Submit"
                     onCancel={this.handleCancel}
                     okButtonProps={{form: 'create-post-form', key:'submit', htmlType:'submit'}}
                     destroyOnClose={true}
                     confirmLoading={this.props.isLoading}
-                    o
+                    onOk={() => this.setState(({visible:false}))}
                     >
                     <Form layout="vertical" 
                           id="create-post-form"
                           onFinish={this.onFinish}
-                          initialValues={{contentType: this.state.type}}
+                          initialValues={this.props.initialValues?this.props.initialValues:{contentType: this.state.type}}
                     >
                         {this.state.msg? <Alert message={this.state.msg} type="error" />: null}
                         <Form.Item 
@@ -246,7 +252,16 @@ class CreatePostModal extends React.Component {
                                   )}
                             </Form.List>
                         </Form.Item>
-                        <Form.Item name="contentType" label="Type">
+
+                    {this.state.image?
+                    <Radio.Group onChange={this.updateImageChange} name="updateIamge">
+                    <Radio.Button value="update">Update An New Image</Radio.Button>
+                    <Radio.Button value="keep">Keep The Original Image</Radio.Button>
+                    </Radio.Group>
+                    :null}
+
+                    {this.state.updateImage=="update" && !this.state.hasInitImage?
+                        <div><Form.Item name="contentType" label="Type">
                             <Radio.Group onChange={this.postTypeChange} name="contentType">
                                 <Radio.Button value="text/plain">Plaintext</Radio.Button>
                                 <Radio.Button value="text/markdown">Markdown</Radio.Button>
@@ -255,10 +270,13 @@ class CreatePostModal extends React.Component {
                                 <Radio.Button value="image/png;base64">PNG</Radio.Button>
                             </Radio.Group>
                         </Form.Item>
-                    {this.state.type == "text/plain"?plaintextFormItem():null}
-                    {this.state.type == "text/markdown"?markdownFormItem():null}
-                    {this.state.type == "image/jpeg;base64"?this.jpegFormItem():null}
-                    {this.state.type == "image/png;base64"?this.pngFormItem():null}
+                        {this.state.type == "text/plain"?plaintextFormItem():null}
+                        {this.state.type == "text/markdown"?markdownFormItem():null}
+                        {this.state.type == "image/jpeg;base64"?this.jpegFormItem():null}
+                        {this.state.type == "image/png;base64"?this.pngFormItem():null}
+                        </div>:null}
+                    
+                    
                     </Form>
                 </Modal>
             </>
@@ -271,5 +289,7 @@ const mapStateToProps = state => ({
     error: state.error,
     isLoading: state.post.isLoading,
     createError: state.post.createError,
+    postsCreated: state.post.postsCreated,
+    postsEdited: state.post.postsEdited,
 });
-export default connect(mapStateToProps, {createPost, clearErrors})(CreatePostModal);
+export default connect(mapStateToProps, {editPost, clearErrors})(CreatePostModal);

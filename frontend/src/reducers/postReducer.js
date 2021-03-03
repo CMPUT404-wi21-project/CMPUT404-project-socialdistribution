@@ -4,6 +4,9 @@ import {
     DELETE_POST, 
     CREATE_POST_FAIL,
     CREATE_POST_SUCCESS,
+    EDIT_POST,
+    EDIT_POST_SUCCESS,
+    EDIT_POST_FAIL,
     GET_AUTHOR_POSTS,
     GET_AUTHOR_POST_SUCCESS,
     GET_AUTHOR_POST_FAIL,
@@ -20,6 +23,8 @@ const initialState = {
     deleteError: false,
     getError: false,
     postsCreated: false,
+    postsEdited: false,
+    editPostDone: false,
 }
 
 
@@ -54,6 +59,36 @@ export default function(state = initialState, action) {
                 getError: false,
 
             }
+        case EDIT_POST:
+            return {
+                ...state,
+                isLoading: true,
+                createError: false,
+                deleteError: false,
+                editError: false,
+                getError: false,
+            };
+        case EDIT_POST_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                createError: false,
+                deleteError: false,
+                editError: false,
+                getError: false,
+                postsEdited: true,
+                editPostDone: true,
+            }
+        case EDIT_POST_FAIL:
+            return {
+                ...state,
+                isLoading: false,
+                createError: true,
+                deleteError: false,
+                editError: false,
+                getError: false,
+            }
+            
         case GET_AUTHOR_POST_SUCCESS:{
             return{
                 ...state,
@@ -64,6 +99,7 @@ export default function(state = initialState, action) {
                 editError: false,
                 getError: false,
                 postsCreated: false,
+                postsEdited: false,
             }
         }
         case GET_AUTHOR_POSTS:{

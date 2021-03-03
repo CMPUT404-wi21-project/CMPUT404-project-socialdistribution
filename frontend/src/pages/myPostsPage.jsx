@@ -9,6 +9,7 @@ import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
 import CreatePostModal from '../components/post/CreatePostModal';
+import EditPostModal from '../components/post/EditPostModal';
 import PaginationModal from '../components/post/PaginationModal';
 
 import { getCurAuthorPosts } from '../actions/postActions';
@@ -19,7 +20,6 @@ const IconText = ({ icon, text }) => (
     {text}
   </span>
 );
-
 class myPostsPage extends React.Component {
   constructor(props){
     super(props);
@@ -33,8 +33,11 @@ class myPostsPage extends React.Component {
   }
 
   componentDidUpdate = () => {
-
     if (this.props.postsCreated){
+      this.props.getCurAuthorPosts();
+    }
+
+    if (this.props.postsEdited){
       this.props.getCurAuthorPosts();
     }
 
@@ -50,6 +53,10 @@ class myPostsPage extends React.Component {
                 return content;
             case 'text/markdown':
                 return <ReactMarkdown plugins={[gfm]} children={content} />;
+            case "image/png;base64":
+              return <img src={content} width="300px"></img>;
+            case "image/jpeg;base64":
+              return <img src={content} width="300px"></img>;
             default:
                 return content;
         }
@@ -67,7 +74,18 @@ class myPostsPage extends React.Component {
         `${posts[i]['description']}`,
         content:
         `${posts[i]['content']}`,
-        contentType: `${posts[i]['contentType']}`,
+        visibility:
+        `${posts[i]['visibility']}`,
+        unlisted:
+        `${posts[i]['unlisted']}`,
+        categories:
+        `${posts[i]['categories']}`,
+        contentType:
+        `${posts[i]['contentType']}`,
+        content:
+        `${posts[i]['content']}`,
+        image: null,
+
         index: i
       });
     }
@@ -111,8 +129,29 @@ class myPostsPage extends React.Component {
                     description={<div style={{textAlign:'left'}}>{item.author + ':  '}{item.description}</div>}
                   />
                   <div style={{textAlign: 'left', marginTop: '10px'}}>
+
                   {this.renderSwitch(item.contentType, item.content)}
                   </div>
+                  <Row style={{margin: "2%"}}>
+                    <EditPostModal 
+                    text="Edit Post"
+                    initialValues={{
+                      title:item.title, 
+                      description:item.description,
+                      visibility:item.visibility,
+                      unlisted:item.unlisted == 'true',
+                      categories:JSON.parse(item.categories),
+                      contentType:item.contentType,
+                      content:item.contentType==="text/plain"||item.contentType==="text/markdown"?item.content:null,
+                      
+                      id:item.href.split("/").pop()
+                    }}
+                    contentType={item.contentType}
+                    image={item.contentType==="image/jpeg;base64"||item.contentType==="image/png;base64"?item.content:null}
+                    hasInitImage={item.contentType==="image/jpeg;base64"||item.contentType==="image/png;base64"?true:false}
+                    index={item.index}
+                    />
+                   </Row>
                 </Skeleton>
               </List.Item>
             )}
@@ -134,6 +173,8 @@ const mapStateToProps = state => ({
   posts: state.post.posts,
   isLoading: state.post.isLoading,
   postsCreated: state.post.postsCreated,
+  postsEdited: state.post.postsEdited,
+  editPostDone: state.post.editPostDone,
 });
 
 export default connect(mapStateToProps, {getCurAuthorPosts})(myPostsPage);
