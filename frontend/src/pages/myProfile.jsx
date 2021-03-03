@@ -10,6 +10,7 @@ import PageLayout from '../components/profile/PageLayout'
 class myProfile extends React.Component {
     constructor(props){
         super(props);
+        this.props.getMyProfile();    
     }    
 
     //rerender page when update
