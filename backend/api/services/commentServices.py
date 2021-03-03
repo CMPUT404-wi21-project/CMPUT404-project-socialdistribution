@@ -55,7 +55,12 @@ class commentServices():
         except Exception as e:
             print(e)
             return Response(HTTP_400_BAD_REQUEST)
-    
+   
+    """
+    Retrieve comments for a given post
+    Takes Query Params: page, size
+    Default Query Params are page=1 and size=5 unless otherwise specified
+    """
     @staticmethod
     def getComments(request, author_id, post_id):
         try:
@@ -91,6 +96,10 @@ class commentServices():
             print(e)
             return Response(HTTP_400_BAD_REQUEST)
 
+    """
+    Helper method to create pagination in comments
+    Takes comments, pagesize and pagenum and returns a paginated context
+    """
     # This can be abstracted out to become a common pagination method for all models later, should be easy
     @staticmethod
     def getPaginatedComments(request,comments, pageSize, pageNum):

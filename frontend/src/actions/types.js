@@ -28,3 +28,11 @@ export const CREATE_POST_FAIL           = "CREATE_POST_FAIL";
 export const EDIT_POST                  = "EDIT_POST"
 export const EDIT_POST_SUCCESS          = "EDIT_POST_SUCCESS";
 export const EDIT_POST_FAIL             = "EDIT_POST_FAIL";
+
+// PROFILE TYPES
+export const PROFILE_LOADING        = "PROFILE_LOADING";
+export const PROFILE_LOAD_SUCCESS   = "PROFILE_LOAD_SUCCESS";
+export const PROFILE_LOAD_FAIL      = "PROFILE_LOAD_FAIL";
+export const PROFILE_SAVING         = "PROFILE_SAVING";
+export const PROFILE_SAVE_SUCCESS   = "PROFILE_SAVE_SUCCESS";
+export const PROFILE_SAVE_FAIL      = "PROFILE_SAVE_FAIL";

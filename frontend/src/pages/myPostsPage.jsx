@@ -2,9 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Row, Col, Button} from 'antd';
-import { Skeleton, Switch, List, Avatar } from 'antd';
+import { Skeleton, Switch, List, Avatar, Space, Spin } from 'antd';
 import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 
+import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm'
 
 import CreatePostModal from '../components/post/CreatePostModal';
 import EditPostModal from '../components/post/EditPostModal';
@@ -23,7 +25,6 @@ class myPostsPage extends React.Component {
   constructor(props){
     super(props);
     this.addPostsIntoList = this.addPostsIntoList.bind(this);
-    this.isUpdated = true;
     this.state = {posts: []};
   }
 
@@ -33,35 +34,30 @@ class myPostsPage extends React.Component {
   }
 
   componentDidUpdate = () => {
-    if (this.props.isLoading){
-      this.isUpdated = false;
+
+    if (this.props.postsCreated){
+      this.props.getCurAuthorPosts();
     }
 
-    // when there are posts exist
-    if (this.props.posts.length !== 0){
-      // grab posts when new post is created
-      if (!this.props.isLoading && !this.isUpdated && this.state.posts.length == this.props.posts.length){
-        // give 1 second for backend server to update
-        setTimeout(() => { }, 1000);
-        this.props.getCurAuthorPosts();
-      }
-    }
-    else{
-      // when first post is getting added
-      if (this.props.postsCreated){
-        setTimeout(() => { }, 1000);
-        this.props.getCurAuthorPosts();
-      }
-    }
-    // rerender when posts is updated
     if (!this.props.isLoading && this.state.posts.length != this.props.posts.length){
       this.addPostsIntoList(this.props.posts);
-      this.isUpdated = true;
     }
   }
 
+
+  renderSwitch(contentType, content) {
+        switch (contentType) {
+            case 'text/plain':
+                return content;
+            case 'text/markdown':
+                return <ReactMarkdown plugins={[gfm]} children={content} />;
+            default:
+                return content;
+        }
+  }
+
   addPostsIntoList = (posts) => {
-    let dataList = []
+    let dataList = [];
     for (let i = 0; i < posts.length; i++) {
       dataList.push({
         author: `${posts[i]['author']['displayName']}`,
@@ -83,6 +79,8 @@ class myPostsPage extends React.Component {
         content:
         `${posts[i]['content']}`,
         image: null,
+
+        index: i
       });
     }
     this.setState({posts: dataList});
@@ -98,14 +96,17 @@ class myPostsPage extends React.Component {
           <CreatePostModal/>
         </Row>
         <>
-          <List
+        {this.props.isLoading?(<Space size="middle">
+            <Spin size="large" />
+          </Space>):(
+            <List
             itemLayout="vertical"
             size="large"
             dataSource={this.state.posts}
             style={{marginLeft: 'auto', marginRight: 'auto', height:'80%', width:'80%'}}
             renderItem={item => (
               <List.Item
-                key={item.title}
+                key={item.index}
                 style={{borderColor: '#eee #ddd #bbb', maxWidth: '80%', backgroundColor: 'white', marginLeft: 'auto', marginRight: 'auto'}}
                 actions={
                   [
@@ -125,8 +126,8 @@ class myPostsPage extends React.Component {
                   {item.contentType==="image/png;base64" || item.contentType==="image/jpeg;base64"?
                       <img src={item.content} width="300px">
                       </img>:null}
-                  {item.contentType==="text/plain" || item.contentType==="text/markdown"?
-                      item.content:null}
+
+                  {this.renderSwitch(item.contentType, item.content)}
                   </div>
                   <Row style={{margin: "2%"}}>
                     <EditPostModal 
@@ -151,6 +152,8 @@ class myPostsPage extends React.Component {
               </List.Item>
             )}
           />
+
+          )}
         </>
         <Row style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px"}}>
           <PaginationModal/>

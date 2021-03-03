@@ -56,7 +56,7 @@ def getPostsByAuthorId(request, author_id, pageNum = 0):
 #
 # return query result in json list
 ################################################
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 def handlePostByPostId(request, author_id, post_id):
   try:
     if request.method == 'GET':
@@ -65,12 +65,21 @@ def handlePostByPostId(request, author_id, post_id):
       return res
     elif request.method == 'POST':
       res = editPost(request, author_id, post_id)
+    elif request.method == 'DELETE':
+      res = deletePost(request, author_id, post_id)
       return res
 
   except AssertionError:
     raise NotImplementedError("some Http method is not implemented for this api point")
 
-
+##########################################
+# input
+#    request, author_id, post_id
+#
+# outPut
+#    the post matched the author_id and post_id
+#     or status code 404, if not found
+###########################################
 def getPost(request, author_id, post_id):
   res = postServices.getPostByPostId(request, post_id, author_id)
   if res.status_code == 404:
@@ -83,6 +92,10 @@ def editPost(request, author_id, post_id):
   res = postServices.editPostById(request, post_id, author_id)
   return res
   
+def deletePost(request, author_id, post_id):
+  res = postServices.deletePostByPostId(request, author_id, post_id)
+  return res
+
 # method for same link goes down to here
 # post, delete, put
 
