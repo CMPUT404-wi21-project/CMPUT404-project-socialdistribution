@@ -24,7 +24,6 @@ class myPostsPage extends React.Component {
   constructor(props){
     super(props);
     this.addPostsIntoList = this.addPostsIntoList.bind(this);
-    this.isUpdated = true;
     this.state = {posts: []};
   }
 
@@ -34,30 +33,13 @@ class myPostsPage extends React.Component {
   }
 
   componentDidUpdate = () => {
-    if (this.props.isLoading){
-      this.isUpdated = false;
+
+    if (this.props.postsCreated){
+      this.props.getCurAuthorPosts();
     }
 
-    // when there are posts exist
-    if (this.props.posts.length !== 0){
-      // grab posts when new post is created
-      if (!this.props.isLoading && !this.isUpdated && this.state.posts.length == this.props.posts.length){
-        // give 1 second for backend server to update
-        setTimeout(() => { }, 1000);
-        this.props.getCurAuthorPosts();
-      }
-    }
-    else{
-      // when first post is getting added
-      if (this.props.postsCreated){
-        setTimeout(() => { }, 1000);
-        this.props.getCurAuthorPosts();
-      }
-    }
-    // rerender when posts is updated
     if (!this.props.isLoading && this.state.posts.length != this.props.posts.length){
       this.addPostsIntoList(this.props.posts);
-      this.isUpdated = true;
     }
   }
 

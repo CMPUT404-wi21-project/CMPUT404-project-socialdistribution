@@ -62,7 +62,8 @@ export default function(state = initialState, action) {
                 createError: false,
                 deleteError: false,
                 editError: false,
-                getError: false, 
+                getError: false,
+                postsCreated: false,
             }
         }
         case GET_AUTHOR_POSTS:{
