@@ -65,7 +65,7 @@ class postServices():
   @staticmethod
   def deletePostByPostId(request, author_id, post_id):
     try:
-      data = post.Post.objects.filter(author_id__exact=post_id).filter(post_id__exact=post_id).delete()
+      data = post.Post.objects.filter(author_id__exact=author_id).filter(post_id__exact=post_id).delete()
       # delete success
       if data[0]:
         return Response(status=status.HTTP_200_OK)
