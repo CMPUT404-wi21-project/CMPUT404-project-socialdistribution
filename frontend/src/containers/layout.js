@@ -21,7 +21,7 @@ const authenticatedMenu = () => {
                     <Menu.Item key="2" style={{float: "right"}}>
                             <UserOutlined/>
                             <span>Profile</span>
-                            <Link to="/Profile" />
+                            <Link to="/profile" />
                     </Menu.Item>
                     <Menu.Item key="3" style={{float: "right"}}>
                             <InboxOutlined/>
