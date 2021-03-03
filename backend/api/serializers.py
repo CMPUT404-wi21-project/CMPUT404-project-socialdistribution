@@ -1,4 +1,4 @@
-from .models import author, post, signupRequest, comment
+from .models import author, post, signupRequest, comment, like
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.core import serializers as serialize
@@ -13,7 +13,7 @@ import json
 class PostSerializer(serializers.ModelSerializer):
   class Meta:
     model = post.Post
-    fields = ['title', 'description', 'content', 'contentType', 'visibility', 'categories', 'author_id', 'unlisted', 'categories']
+    fields = ['title', 'description', 'content', 'contentType', 'visibility', 'categories', 'author_id', 'unlisted']
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -44,6 +44,12 @@ class CommentSerializer(serializers.ModelSerializer):
         model = comment.Comment
         # Serializes every field in the model
         fields = ['content', 'contentType']
+
+# LIKE SERIALIZER
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = like.Like
+        fields = ['post_id', 'comment_id', 'L_author_id', 'like_type', 'url']
 
     
 
