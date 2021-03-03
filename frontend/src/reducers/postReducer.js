@@ -2,6 +2,8 @@ import {
     GET_POSTS, 
     CREATE_POST, 
     DELETE_POST, 
+    DELETE_POST_SUCCESS,
+    DELETE_POST_FAIL,
     CREATE_POST_FAIL,
     CREATE_POST_SUCCESS,
     EDIT_POST,
@@ -102,6 +104,24 @@ export default function(state = initialState, action) {
             return{
                 ...state,
                 isLoading: true,
+            }
+        }
+        case DELETE_POST:{
+            return{
+                ...state,
+                deleteError: false,
+            }
+        }
+        case DELETE_POST_SUCCESS:{
+            return{
+                ...state,
+                postsCreated: true,
+            }
+        }
+        case DELETE_POST_FAIL:{
+            return{
+                ...state,
+                deleteError: true,
             }
         }
         case LOGOUT_SUCCESS:{

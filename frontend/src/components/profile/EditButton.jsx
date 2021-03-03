@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { Modal, Button, Form, Input, Radio, Select, Switch, Alert, Upload } from 'antd';
+import { Modal, Button, Form, Input, message} from 'antd';
 import {saveMyProfile} from '../../actions/profileActions';
 
 class EditButton extends React.Component {
@@ -23,6 +23,13 @@ class EditButton extends React.Component {
         }
 
         this.props.saveMyProfile(values); 
+
+        if(this.props.parentProfile.saveFailed){
+            message.error('Failed to save to server');
+        }
+        else{
+            message.success('Profile update success');
+        }
         //notify parent component to rerender
         this.props.parentProfile.updateFoo = true;
     }
@@ -62,14 +69,16 @@ class EditButton extends React.Component {
                         <Form.Item
                         name="displayName"
                         label="Display Name"
+                        initialValue={this.props.profile.displayName}
                         >
-                            <Input defaultValue={this.props.profile.displayName}/>
+                            <Input />
                         </Form.Item>
                         <Form.Item 
                             name="github"
                             label="Github URL"
+                            initialValue={this.props.profile.github}
                         >
-                            <Input defaultValue={this.props.profile.github} />
+                            <Input />
                         </Form.Item>
                             
                     </Form>

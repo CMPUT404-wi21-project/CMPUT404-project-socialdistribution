@@ -82,3 +82,20 @@ export const getCurAuthorPosts = () => (dispatch, getState) => {
             });
         });
 }
+
+// DELETE POSTS by authorID and PostID
+export const deletePost = (id) => (dispatch, getState) => {
+    dispatch({ type: DELETE_POST })
+    axios.delete(process.env.REACT_APP_HOST +
+        `/author/${getState().auth.user.pk}/posts/${id}`, tokenConfig(getState))
+        .then(res => dispatch({
+            type: DELETE_POST_SUCCESS,
+            // payload: res.data,
+        }))
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status, "DELETE_POST_FAIL"));
+            dispatch({
+                type: DELETE_POST_FAIL,
+            });
+        });
+}

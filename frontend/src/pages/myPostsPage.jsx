@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Row, Col, Button} from 'antd';
 import { Skeleton, Switch, List, Avatar, Space, Spin } from 'antd';
-import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import { StarOutlined, LikeOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
@@ -11,6 +11,7 @@ import gfm from 'remark-gfm'
 import CreatePostModal from '../components/post/CreatePostModal';
 import EditPostModal from '../components/post/EditPostModal';
 import PaginationModal from '../components/post/PaginationModal';
+import DropDown from '../components/post/DropDown'
 
 import { getCurAuthorPosts } from '../actions/postActions';
 
@@ -18,6 +19,7 @@ const IconText = ({ icon, text }) => (
   <span>
     {React.createElement(icon, { style: { marginRight: 8 } })}
     {text}
+
   </span>
 );
 class myPostsPage extends React.Component {
@@ -100,12 +102,13 @@ class myPostsPage extends React.Component {
       });
     }
     this.setState({posts: dataList});
-  }
+  } 
 
   render() {
     if (!this.props.isAuthenticated) {
         return <Redirect to="/"/>
-    }
+    }    
+
     return (
     <>
         <Row style={{margin: "2%"}}>
@@ -128,8 +131,11 @@ class myPostsPage extends React.Component {
                   [
                     <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                     <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,                    
+                    <DropDown url={item.href}/>
+                     
                   ]
+                  
                 }
               >
                 <Skeleton loading={false} active avatar>

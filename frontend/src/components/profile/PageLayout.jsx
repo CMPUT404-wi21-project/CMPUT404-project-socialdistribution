@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 
-import {Row, Col, Button} from 'antd';
-import { Avatar } from 'antd';
+import {Row, Col} from 'antd';
 import { Menu } from 'antd';
 import {UserOutlined, GithubOutlined} from '@ant-design/icons';
 import AboutMe from './AboutMe';
 import EditButton from './EditButton';
-import { Image } from 'antd';
 
 class PageLayout extends React.Component {
     constructor(props) {

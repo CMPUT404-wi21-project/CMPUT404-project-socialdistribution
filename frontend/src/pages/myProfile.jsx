@@ -9,17 +9,17 @@ import PageLayout from '../components/profile/PageLayout'
 //Redirect user to its profile apge
 class myProfile extends React.Component {
     constructor(props){
-        super(props);
-        this.props.getMyProfile();    
+        super(props);        
     }    
+
+    componentDidMount(){
+        this.props.getMyProfile();    
+    }
 
     //rerender page when update
     componentDidUpdate() {    
         if (this.props.profile.updateFoo){
-            this.props.profile.updateFoo=false;
-            if(this.props.profile.saveFailed){
-                message.warning('Failed to save to server');
-            }
+            this.props.profile.updateFoo=false;            
             this.props.getMyProfile();    
             if(this.props.profile.loadFailed){
                 message.warning('Failed to laod from server');   
