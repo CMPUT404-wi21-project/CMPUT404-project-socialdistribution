@@ -7,6 +7,7 @@ from ..views import simpleSignupRequestView
 from ..views import authView
 from ..views import commentView
 from ..views import likeView
+from ..views import simplePostView
 
 """
 Tests to ensure that for each endpoint the correct view class/method is being called
@@ -44,9 +45,15 @@ class TestUrls(TestCase):
         url = reverse('get-likes-for-comment', args=['author_id', 'post_id', 'comment_id'])
         self.assertEqual(resolve(url).func, likeView.getLikesForComment)
 
-    def test_get_liked_for_author(self):
+    def test_get_liked_for_author_url_resolves(self):
         url = reverse('get-liked-by-author', args=['author_id'])
         self.assertEqual(resolve(url).func, likeView.getLikedForAuthor)
 
+    # ============== Posts URLS   ===================
+    def test_create_post_for_author(self):
+        url = reverse("handle-posts-view", args=['author_id'])
+        self.assertEqual(resolve(url).func, simplePostView.handlePostByAuthorId)
 
-
+    def test_get_posts(self):
+        url = reverse("handle-single-post-view", args=['author_id', 'post_id'])
+        self.assertEqual(resolve(url).func, simplePostView.handlePostByPostId)
