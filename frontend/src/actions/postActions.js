@@ -53,7 +53,7 @@ export const editPost = (post,id) => (dispatch, getState) => {
         .then(res => {
             dispatch({
                 type: EDIT_POST_SUCCESS,
-                payload: res.data,
+                // payload: res.data,
             });
         })
         .catch(err => {

@@ -65,6 +65,8 @@ def handlePostByPostId(request, author_id, post_id):
       return res
     elif request.method == 'POST':
       res = editPost(request, author_id, post_id)
+      return res
+      
     elif request.method == 'DELETE':
       res = deletePost(request, author_id, post_id)
       return res

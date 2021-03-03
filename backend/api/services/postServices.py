@@ -49,17 +49,7 @@ class postServices():
 
         setattr(data, key_of_update, value_of_update)
       data.save()
-
-      serialized_post = json.loads(serializers.serialize('json', [data]))
-      data = serialized_post[0]['fields']
-      data['post_id'] = serialized_post[0]['pk']
-      
-      # Send the created post back to the user in case they need to use it immediately on the frontend
-      res = Response(status=status.HTTP_200_OK)
-      res.data = data
-      return res
-
-      # return Response(status=status.HTTP_200_OK)
+      return Response(status=status.HTTP_200_OK)
 
     except:
       return Response(status=status.HTTP_400_BAD_REQUEST)

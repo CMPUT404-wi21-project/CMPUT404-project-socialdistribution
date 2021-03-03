@@ -41,6 +41,7 @@ class CreatePostModal extends React.Component {
         image: this.props.image,
         hasInitImage: this.props.hasInitImage,
         updateImage: "update",
+        index: this.props.index,
     }
 
 
@@ -80,14 +81,12 @@ class CreatePostModal extends React.Component {
             this.setState(({image:reader.result}))
           };
           reader.onerror = (err) => {
-            console.log(err);
             this.setState({msg: err}); 
           };
         }
       }
     
     getImageUrl = async (e)=>  {
-        console.log(e.target.value)
         this.setState(({image:e.target.value}))
     }
     
@@ -160,7 +159,7 @@ class CreatePostModal extends React.Component {
             values.content = this.state.image;
         }
         this.props.editPost(values, this.props.initialValues.id); 
-        // window.location.reload(false)
+        this.props.postsEdited=true;
     }
      
     // Update the content type in the state to ensure we show relevant information in the form
@@ -290,5 +289,7 @@ const mapStateToProps = state => ({
     error: state.error,
     isLoading: state.post.isLoading,
     createError: state.post.createError,
+    postsCreated: state.post.postsCreated,
+    postsEdited: state.post.postsEdited,
 });
 export default connect(mapStateToProps, {editPost, clearErrors})(CreatePostModal);
