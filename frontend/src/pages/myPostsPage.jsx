@@ -143,7 +143,12 @@ class myPostsPage extends React.Component {
                   [
                     <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                     <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,                    
-                    <DropDown url={item.href} openEditModal={this.openEditModal} index = {item.index}/>
+                    <DropDown 
+                    correct={this.state.posts.length == this.props.posts.length} 
+                    url={item.href} 
+                    openEditModal={this.openEditModal} 
+                    index = {item.index}
+                    />
                      
                   ]
                   

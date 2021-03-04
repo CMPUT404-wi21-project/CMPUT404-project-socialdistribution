@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {Row, Col} from 'antd';
 import { Menu } from 'antd';
-import {UserOutlined, GithubOutlined} from '@ant-design/icons';
+import {UserOutlined, ContactsOutlined, GithubOutlined} from '@ant-design/icons';
 import AboutMe from './AboutMe';
 import EditButton from './EditButton';
 
@@ -43,12 +43,12 @@ class PageLayout extends React.Component {
                 </Col>
                 <Col span={16} style={rightCol}>
                     <h1>{this.props.profile.displayName}</h1>
-                    <Menu onClick={this.handleClick} mode="horizontal">
+                    <Menu onClick={this.handleClick} mode="horizontal" selectedKeys={[this.state.key]}>
                         <Menu.Item key="aboutMe" icon={<UserOutlined />}>
                         About Me
                         </Menu.Item>
                         <Menu.Item key="github" icon={<GithubOutlined />}>
-                        Github
+                        Github Activity
                         </Menu.Item>
                     </Menu>
                     {this.state.key==='aboutMe'?

@@ -6,20 +6,26 @@ import {deletePost, getCurAuthorPosts} from '../../actions/postActions'
 
 class DropDown extends React.Component {
     constructor(props) {
-        super(props);
-        this.a = this.props.url.split("/");
-        this.id = this.a[this.a.length - 1];
+        super(props);        
     }    
 
     handleMenuClick = (e) =>  {
         if(e.key == "delete"){
-            this.props.deletePost(this.id);
-            if(this.props.deleteError){
-                message.error('Post delete failed');
+            this.a = this.props.url.split("/");
+            this.id = this.a[this.a.length - 1];
+            if(this.props.correct){
+                this.props.deletePost(this.id);
+                if(this.props.deleteError){
+                    message.error('Post delete failed');
+                }
+                else{
+                    message.success('Post delete success');
+                }    
+                   
             }
-            else{
-                message.success('Post delete success');
-            }
+            else{//true
+                message.warning('Wait for last action complete and try again');
+            }            
         }
 
         if (e.key == "edit"){
@@ -51,6 +57,7 @@ class DropDown extends React.Component {
 
 const mapStateToProps = state => ({
     profile: state.profile.profile,
+    post: state.post,
 });
 
 export default connect(mapStateToProps, {deletePost, getCurAuthorPosts})(DropDown);
