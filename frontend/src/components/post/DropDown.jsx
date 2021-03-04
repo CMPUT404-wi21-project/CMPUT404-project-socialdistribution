@@ -21,7 +21,10 @@ class DropDown extends React.Component {
                 message.success('Post delete success');
             }
         }
-        
+
+        if (e.key == "edit"){
+            this.props.openEditModal(this.props.index);
+        }
     }
 
     render() {      
