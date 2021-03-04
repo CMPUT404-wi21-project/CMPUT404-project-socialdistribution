@@ -36,3 +36,6 @@ export const PROFILE_LOAD_FAIL      = "PROFILE_LOAD_FAIL";
 export const PROFILE_SAVING         = "PROFILE_SAVING";
 export const PROFILE_SAVE_SUCCESS   = "PROFILE_SAVE_SUCCESS";
 export const PROFILE_SAVE_FAIL      = "PROFILE_SAVE_FAIL";
+
+// PAGE SWITCH TYPES
+export const CHANGE_PAGE            = "CHANGE_PAGE";
