@@ -7,6 +7,7 @@ import {UserOutlined, GithubOutlined} from '@ant-design/icons';
 import AboutMe from './AboutMe';
 import EditButton from './EditButton';
 
+
 class PageLayout extends React.Component {
     constructor(props) {
         super(props);
@@ -41,6 +42,7 @@ class PageLayout extends React.Component {
                 }}>
 
                 </Col>
+
                 <Col span={16} style={rightCol}>
                     <h1>{this.props.profile.displayName}</h1>
                     <Menu onClick={this.handleClick} mode="horizontal">
@@ -56,7 +58,18 @@ class PageLayout extends React.Component {
                             <AboutMe />
                             <EditButton />
                         </>:
-                    <p>Under developing ...</p>}
+                        
+                    <p>
+                        <a href={this.props.profile.github + "/class"}>
+                            <img src={"https://grass-graph.moshimo.works/images/" + (this.props.profile.github.replace("http://github.com/", '')) + ".png"}           
+                            style={{
+                                resizeMode: "center",
+                                width: 700
+                                }}></img>
+                        </a>                   
+                    </p>
+                    }
+                    
                 </Col>
             </Row>
         );
