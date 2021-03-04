@@ -45,13 +45,14 @@ class postServices():
     body = json.loads(body)
 
     # convert image from url to base64 (if content is an image link)
-    contentType = body["contentType"]
-    if (contentType.startswith("image/")):
-      content = body["content"]
-      if not content.startswith("data:image/"):
-        url = content
-        base64Content = base64.b64encode(requests.get(url).content).decode("utf-8")
-        body["content"] = "data:" + contentType + "," + base64Content
+    if "contentType" in body:
+      contentType = body["contentType"]
+      if (contentType.startswith("image/")):
+        content = body["content"]
+        if not content.startswith("data:image/"):
+          url = content
+          base64Content = base64.b64encode(requests.get(url).content).decode("utf-8")
+          body["content"] = "data:" + contentType + "," + base64Content
 
     try:
       # update post
