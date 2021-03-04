@@ -23,6 +23,7 @@ class FriendListAdmin(admin.ModelAdmin):
 class FriendRequestAdmin(admin.ModelAdmin):
     list_filter = ['sender','receiver']
     list_display = ['sender','receiver']
+    actions = ['accept']
     
     class Meta:
         model = FriendRequest

@@ -1,7 +1,7 @@
 from django.urls import path, re_path, include
 from django.conf.urls import url
 
-from .views import index, author, simplePostView, simpleSignupRequestView, authView, commentView, likeView
+from .views import index, author, simplePostView, simpleSignupRequestView, authView, commentView, likeView, friend
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # if you are adding a static path, consider put it on top of dynamic paths
@@ -35,5 +35,9 @@ urlpatterns = [
     path('author/<str:author_id>/posts/<str:post_id>/likes', likeView.getLikesForPost), # GET
     path('author/<str:author_id>/posts/<str:post_id>/comments/<str:comment_id>/likes', likeView.getLikesForComment), # GET
     path('author/<str:author_id>/liked', likeView.getLikedForAuthor), # GET
+
+    #friend requests no url in spec
+    path('friend_request/',friend.send_friend_request,name="friend-request"),
+
 ]
 

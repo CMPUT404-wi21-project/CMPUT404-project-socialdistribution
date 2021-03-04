@@ -28,8 +28,9 @@ class Friend(models.Model):
 def __str__(self):
     return self.author_id.displayName
 
-def add_friend(self,account):
+def add_friend(self, account):
     if not account in self.friends.all():
+    #TODO: self.follower.add as well
         self.friends.add(account)
 
 def remove_friend(self, account):
@@ -83,6 +84,7 @@ class FriendRequest(models.Model):
                 sender_friend_list.add_friend(self.receiver)
                 self.is_active = False
                 self.save()
+
     
     def decline(self):
         """
