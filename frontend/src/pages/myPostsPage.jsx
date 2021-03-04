@@ -27,9 +27,12 @@ class myPostsPage extends React.Component {
     super(props);
     this.addPostsIntoList = this.addPostsIntoList.bind(this);
     this.getEditedIndex = this.getEditedIndex.bind(this);
-    this.state = {posts: []};
+    this.openEditModal = this.openEditModal.bind(this);
+    this.closeEditModal = this.closeEditModal.bind(this);
+    this.state = {posts: [], openEditModal: false};
     this.state1 = {posts: []};
     this.editedIndex = -1;
+    this.index = -1;
   }
 
   componentDidMount = () =>{
@@ -53,6 +56,15 @@ class myPostsPage extends React.Component {
     }
   }
 
+  openEditModal = (index) => {
+    this.index = index;
+    this.setState({openEditModal: true});
+  }
+
+  closeEditModal = (index) => {
+    this.index = index;
+    this.setState({openEditModal: false});
+  }
 
   renderSwitch(contentType, content) {
         switch (contentType) {
@@ -132,22 +144,13 @@ class myPostsPage extends React.Component {
                     <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                     <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                     <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,                    
-                    <DropDown url={item.href}/>
+                    <DropDown url={item.href} openEditModal={this.openEditModal} index = {item.index}/>
                      
                   ]
                   
                 }
               >
-                <Skeleton loading={false} active avatar>
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
-                    title={<div style={{textAlign: 'left'}}><a href={item.href}>{item.title}</a> </div>}
-                    description={<div style={{textAlign:'left'}}>{item.author + ':  '}{item.description}</div>}
-                  />
-                  <div style={{textAlign: 'left', marginTop: '10px'}}>
-
-                  {this.renderSwitch(item.contentType, item.content)}
-                  </div>
+                {this.state.openEditModal && item.index == this.index ?
                   <Row style={{margin: "2%"}}>
                     <EditPostModal 
                     text="Edit Post"
@@ -166,8 +169,19 @@ class myPostsPage extends React.Component {
                     hasInitImage={item.contentType==="image/jpeg;base64"||item.contentType==="image/png;base64"?true:false}
                     index={item.index}
                     getEditedIndex = {this.getEditedIndex}
+                    closeEditModal = {this.closeEditModal}
                     />
                    </Row>
+                   : null}
+                <Skeleton loading={false} active avatar>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.avatar} />}
+                    title={<div style={{textAlign: 'left'}}><a href={item.href}>{item.title}</a> </div>}
+                    description={<div style={{textAlign:'left'}}>{item.author + ':  '}{item.description}</div>}
+                  />
+                  <div style={{textAlign: 'left', marginTop: '10px'}}>
+                  {this.renderSwitch(item.contentType, item.content)}
+                  </div>
                 </Skeleton>
               </List.Item>
             )}

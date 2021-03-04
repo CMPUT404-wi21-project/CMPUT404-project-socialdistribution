@@ -32,7 +32,6 @@ const visibilities = [
 
 class CreatePostModal extends React.Component {
     state = {
-        visible: false,
         confirmLoading: false,
         content: "",
         categories: {},
@@ -58,7 +57,7 @@ class CreatePostModal extends React.Component {
         } else if (isLoading !== prevProps.isLoading) {
             if (createError === false) {
                 if(isLoading === false) {
-                    this.setState({visible: false});
+                    this.props.closeEditModal(this.props.index);
                 }
             }
         }
@@ -66,7 +65,7 @@ class CreatePostModal extends React.Component {
     
     handleCancel = () => {
         this.props.clearErrors();
-        this.setState({visible: false});
+        this.props.closeEditModal(this.props.index);
         // Clear all the content of the modal as well
     }
 
@@ -143,10 +142,6 @@ class CreatePostModal extends React.Component {
         </Form.Item>
     );
 
-    showModal = () => {
-        this.setState({visible: true});
-    }
-
     onFinish = (values) => {
         // It can be the case that the user provides no categories, in that case, default to []
         if (values.categories === undefined) {
@@ -159,7 +154,9 @@ class CreatePostModal extends React.Component {
             values.content = this.state.image;
         }
         this.props.editPost(values, this.props.initialValues.id);
-        this.props.getEditedIndex(this.props.index)
+        this.props.getEditedIndex(this.props.index);
+        console.log(this.props.index)
+        this.props.closeEditModal(this.props.index);
     }
      
     // Update the content type in the state to ensure we show relevant information in the form
@@ -179,20 +176,15 @@ class CreatePostModal extends React.Component {
     render()  {
         return (
             <>
-                <Button type="primary" 
-                        size="large"
-                        onClick={this.showModal}>
-                    Edit Post
-                </Button>
                 <Modal
                     title="Edit Post"
-                    visible={this.state.visible}
+                    visible={true}
                     okText="Submit"
                     onCancel={this.handleCancel}
                     okButtonProps={{form: 'create-post-form', key:'submit', htmlType:'submit'}}
                     destroyOnClose={true}
                     confirmLoading={this.props.isLoading}
-                    onOk={() => this.setState(({visible:false}))}
+                    onOk={() => this.onFinish}
                     >
                     <Form layout="vertical" 
                           id="create-post-form"
@@ -290,6 +282,5 @@ const mapStateToProps = state => ({
     isLoading: state.post.isLoading,
     createError: state.post.createError,
     postsCreated: state.post.postsCreated,
-    postsEdited: state.post.postsEdited,
 });
 export default connect(mapStateToProps, {editPost, clearErrors})(CreatePostModal);
