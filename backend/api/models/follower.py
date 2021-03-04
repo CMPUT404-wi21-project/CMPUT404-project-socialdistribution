@@ -12,6 +12,7 @@ class Follower(models.Model):
     follower   = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="follower")
 
     # The person who is being followed( The person who should get the request )
+    # make this many to many
     followee   = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="followee")
     
     url        = models.URLField()

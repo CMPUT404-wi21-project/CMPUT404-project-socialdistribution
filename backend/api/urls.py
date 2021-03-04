@@ -36,8 +36,10 @@ urlpatterns = [
     path('author/<str:author_id>/posts/<str:post_id>/comments/<str:comment_id>/likes', likeView.getLikesForComment), # GET
     path('author/<str:author_id>/liked', likeView.getLikedForAuthor), # GET
 
-    #friend requests no url in spec
-    path('friend_request/',friend.send_friend_request,name="friend-request"),
-
+    # Follower
+    path('author/<str:follower>/followers/',friend.get_all_follower,name="followers"), # GET
+    path('author/<str:follower>/followers/<str:followee>',friend.send_friend_request,name="friend-request"), # PUT
+    path('author/<str:follower>/followers/<str:followee>',friend.get_follower,name="check-follower"), # GET
+    path('author/<str:follower>/followers/<str:followee>',friend.delete_follower,name="delete-follower"), # DELETE
 ]
 

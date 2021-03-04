@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.conf import settings
 # Related Model
 from api.models.author import Author
+from api.models.follower import Follower
 
 
 # NOTE: When a friend record is created there should be two records made, with each user as the primary friend
@@ -30,12 +31,15 @@ def __str__(self):
 
 def add_friend(self, account):
     if not account in self.friends.all():
-    #TODO: self.follower.add as well
         self.friends.add(account)
+    if not account in self.followee.all():
+        self.followee.add(account)
 
 def remove_friend(self, account):
     if account in self.friends.all():
         self.friends.remove(account)
+    if account in self.followee.all():
+        self.followee.remove(account)
 
 def unfriend(self, removee):
     # person removing
@@ -51,6 +55,11 @@ def unfriend(self, removee):
 def is_mutual_friend(self,friend):
     # is friend?
     if friend in self.friends.all():
+        return True
+    return False
+
+def is_follower(self,friend):
+    if friend in self.followee.all():
         return True
     return False
 
