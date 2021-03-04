@@ -56,7 +56,16 @@ class PageLayout extends React.Component {
                             <AboutMe />
                             <EditButton />
                         </>:
-                    <p>Under developing ...</p>}
+                    <p>
+                        <a href={this.props.profile.github}>
+                            <img src={"https://grass-graph.moshimo.works/images/" + (this.props.profile.github.replace("http://github.com/", '')) + ".png"}           
+                            style={{
+                                resizeMode: "center",
+                                width: 650
+                                }}>    
+                            </img>
+                        </a>     
+                    </p>}
                 </Col>
             </Row>
         );
