@@ -7,7 +7,7 @@ import json
 
 from ..models.author import Author
 from ..models.friend import FriendRequest
-from ..models.friend import remove_friend, unfriend, is_follower
+from ..models.friend import add_friend, remove_friend, unfriend, is_follower
 from ..services.followerservices import get_followers
 
 @api_view(['PUT'])
