@@ -69,15 +69,15 @@ class myPostsPage extends React.Component {
   renderSwitch(contentType, content) {
         switch (contentType) {
             case 'text/plain':
-                return content;
+                return <div style={{textAlign: 'left', marginTop: '10px'}}>{content}</div>;
             case 'text/markdown':
-                return <ReactMarkdown plugins={[gfm]} children={content} />;
+                return <div style={{textAlign: 'left', marginTop: '10px'}}><ReactMarkdown plugins={[gfm]} children={content}/> </div>;
             case "image/png;base64":
-              return <img src={content} width="300px"></img>;
+              return <img src={content} width="300px" style={{textAlign: 'center', marginTop: '10px'}}></img>;
             case "image/jpeg;base64":
-              return <img src={content} width="300px"></img>;
+              return <img src={content} width="300px" style={{textAlign: 'center', marginTop: '10px'}}></img>;
             default:
-                return content;
+                return <div style={{textAlign: 'left', marginTop: '10px'}}>{content}</div>;
         }
   }
 
@@ -141,7 +141,6 @@ class myPostsPage extends React.Component {
                 style={{borderColor: '#eee #ddd #bbb', maxWidth: '80%', backgroundColor: 'white', marginLeft: 'auto', marginRight: 'auto'}}
                 actions={
                   [
-                    <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                     <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                     <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,                    
                     <DropDown url={item.href} openEditModal={this.openEditModal} index = {item.index}/>
@@ -179,9 +178,7 @@ class myPostsPage extends React.Component {
                     title={<div style={{textAlign: 'left'}}><a href={item.href}>{item.title}</a> </div>}
                     description={<div style={{textAlign:'left'}}>{item.author + ':  '}{item.description}</div>}
                   />
-                  <div style={{textAlign: 'left', marginTop: '10px'}}>
                   {this.renderSwitch(item.contentType, item.content)}
-                  </div>
                 </Skeleton>
               </List.Item>
             )}
