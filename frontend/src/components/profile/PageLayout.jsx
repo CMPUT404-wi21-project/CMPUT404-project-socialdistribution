@@ -6,6 +6,7 @@ import { Menu } from 'antd';
 import {UserOutlined, ContactsOutlined, GithubOutlined} from '@ant-design/icons';
 import AboutMe from './AboutMe';
 import EditButton from './EditButton';
+import Github from './GitHub';
 
 class PageLayout extends React.Component {
     constructor(props) {
@@ -17,8 +18,14 @@ class PageLayout extends React.Component {
         this.setState({key: e.key});
     };    
 
+    componentDidMount() {
+
+    }
+
     render() {
         //page style
+        const {key } = this.state;
+        
         const pageStyle = {
             backgroundColor: 'white',
             padding: '3%',
@@ -31,9 +38,10 @@ class PageLayout extends React.Component {
             padding: '5%',
             textAlignVertical: 'top',            
         }
-               
-
+        
+   
         return (
+
             <Row style={pageStyle}>
                 <Col span={6} style={{
                     backgroundColor: 'aqua',
@@ -55,7 +63,9 @@ class PageLayout extends React.Component {
                             <AboutMe />
                             <EditButton />
                         </>:
-                    <p>Under developing ...</p>}
+                        (<>
+                            <Github />
+                        </>)}
                 </Col>
             </Row>
         );
