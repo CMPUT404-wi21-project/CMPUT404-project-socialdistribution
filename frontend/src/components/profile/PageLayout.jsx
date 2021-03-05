@@ -10,15 +10,32 @@ import EditButton from './EditButton';
 class PageLayout extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { key: 'aboutMe' }
+        this.state = { key: 'aboutMe', items: [], isLoaded:false }
     }    
 
     handleClick = e => {
         this.setState({key: e.key});
     };    
 
+    componentDidMount() {
+
+        fetch('https://api.github.com/users/GillisGill/events')
+            .then(res => res.json())
+            .then(json => {
+                this.setState({
+                    items: json,
+                    isLoaded: true, 
+                })
+            }).catch((err) => {
+                console.log(err);
+            });
+
+    }
+
     render() {
         //page style
+        const {key, isLoaded, items} = this.state;
+        
         const pageStyle = {
             backgroundColor: 'white',
             padding: '3%',
@@ -31,9 +48,13 @@ class PageLayout extends React.Component {
             padding: '5%',
             textAlignVertical: 'top',            
         }
-               
+        
+        if (!isLoaded)
+            return <div>Loading...</div>;
+
 
         return (
+
             <Row style={pageStyle}>
                 <Col span={8} style={{
                     backgroundColor: 'aqua',
@@ -65,6 +86,15 @@ class PageLayout extends React.Component {
                                 }}>    
                             </img>
                         </a>     
+                        <div>
+                            <ul>
+                                {items.map(item => (
+                                    <li key={item.id}>
+                                        Name: {item.type} | Email: {item.event}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </p>}
                 </Col>
             </Row>
