@@ -137,3 +137,38 @@ class TestPostView(TestCase):
     self.assertEqual(response.status_code, 200)
     response = self.client.delete(post_url, content_type="application/json", **self.headers)
     self.assertEqual(response.status_code, 404)
+
+  # edit (POST) post by id
+  def test_edit_POST(self):
+    # create a new post first
+    post_url = reverse('handle-posts-view', args=[f'{self.user_A.id}'])
+    original_post = {
+        "title": "testTitle",
+        "description": "test",
+        "contentType": "text/plain",
+        "content": "testContent",
+        "unlisted": True,
+        "visibility": "public",
+    }
+    self.client.post(post_url, data=original_post, content_type="application/json", **self.headers)
+    post_url = reverse('handle-single-post-view', args=[f'{self.user_A.id}', f'{self.test_post.post_id}'])
+
+    # edit the newly created post
+    edited_post = {
+        "title": "new testTitle",
+        "description": "new test",
+        "contentType": "text/markdown",
+        "content": "new testContent",
+        "unlisted": False,
+        "visibility": "private",
+    }
+
+    response = self.client.post(post_url, data=edited_post, content_type="application/json", **self.headers)
+    self.assertEqual(response.status_code, 200)
+  
+    self.assertEqual(response.data['title'],       edited_post['title'])
+    self.assertEqual(response.data['description'], edited_post['description'])
+    self.assertEqual(response.data['contentType'], edited_post['contentType'])
+    self.assertEqual(response.data['content'],     edited_post['content'])
+    self.assertEqual(response.data['unlisted'],    edited_post['unlisted'])
+    self.assertEqual(response.data['visibility'],  edited_post['visibility'])
