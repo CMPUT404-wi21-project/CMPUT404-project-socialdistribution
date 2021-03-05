@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {connect} from 'react-redux';
-import {Space, Spin, Alert, List } from 'antd';
+import {Space, Spin, Alert, List, Image } from 'antd';
 
 class Github extends React.Component {
     constructor(props) {
@@ -169,14 +169,10 @@ class Github extends React.Component {
                 {this.state.msg? <Alert message={this.state.msg} type="error" />: null}
                 {this.state.msg? null: (
                      <div>
-                        <a href={this.props.profile.github}>
-                            <img src={"https://grass-graph.moshimo.works/images/" + (this.state.username) + ".png"}           
-                            style={{
-                                resizeMode: "center",
-                                width: 650
-                                }}>    
-                            </img>
-                        </a>     
+                            <Image
+                              width="50%"
+                              src={"https://grass-graph.moshimo.works/images/" + (this.state.username) + ".png"}
+                            />
                         <div>
                             <ul>
                                 {this.state.items.map(item => (
