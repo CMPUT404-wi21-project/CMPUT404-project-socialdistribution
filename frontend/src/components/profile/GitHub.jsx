@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {connect} from 'react-redux';
-import {Space, Spin, Alert } from 'antd';
+import {Space, Spin, Alert, List } from 'antd';
 
 class Github extends React.Component {
     constructor(props) {
@@ -22,6 +22,114 @@ class Github extends React.Component {
         let url_split = url.toString().split("/");
 
         return url_split.pop();
+    }
+
+    renderItem(item) {
+            if (item.type == "CreateEvent") {
+                if (item.payload.ref_type == "branch"){
+                        return (
+                            <List.Item>
+                                <List.Item.Meta
+                                  title={item.type}
+                                  description={`Created a ${item.payload.ref_type}  '${item.payload.ref}' in ${item.repo.name}`}    
+                            />
+                            </List.Item>
+                        )
+                    } else {
+                        return(
+                            <List.Item>
+                                <List.Item.Meta
+                                    title={item.type}
+                                    description={`Created a ${item.payload.ref_type} ${item.repo.name} `}
+                                />
+                            </List.Item>
+                        )
+                    }
+            } else if (item.type === "PushEvent") {
+                return (
+                    <List.Item>
+                        <List.Item.Meta
+                          title={item.type}
+                          description={`Created a commit in repository ${item.repo.name}`}    
+                    />
+                    </List.Item>
+                )
+            } else if (item.type === "ForkEvent") {
+                return (
+                    <List.Item>
+                        <List.Item.Meta
+                          title={item.type}
+                          description={`Forked a repository ${item.payload.forkee.full_name}`}    
+                    />
+                    </List.Item>
+            )
+            } else if (item.type === "PublicEvent") {
+                return (
+                    <List.Item>
+                        <List.Item.Meta
+                          title={item.type}
+                          description={` Made ${item.repo.name} public`}    
+                    />
+                    </List.Item>
+            )
+            } else if (item.type === "IssuesEvent") {
+                return (
+                    <List.Item>
+                        <List.Item.Meta
+                          title={item.type}
+                          description={`Opened an issue in ${item.repo.name} ${item.payload.title}`}    
+                    />
+                    </List.Item>
+            )
+            } else if (item.type === "PullRequestReviewCommentEvent") {
+                return (
+                    <List.Item>
+                        <List.Item.Meta
+                          title={item.type}
+                          description={`Commented on PR in ${item.repo.name} ${item.payload.comment.body}`}    
+                    />
+                    </List.Item>
+                )
+            }else if(item.type === "PullRequestReviewEvent") {
+                return (
+                    <List.Item>
+                        <List.Item.Meta
+                          title={item.type}
+                          description={`Review Event on PR in ${item.repo.name} ${item.payload.review.body}`}    
+                    />
+                    </List.Item>
+                )
+                }else if (item.type === "DeleteEvent") {
+                    if (item.payload.ref_type == "branch"){
+                            return (
+                            <List.Item>
+                                <List.Item.Meta
+                                  title={item.type}
+                                  description={`Deleted a ${item.payload.ref_type}  '${item.payload.ref}' in ${item.repo.name} `}    
+                            />
+                            </List.Item>
+                        )
+                    } else {
+                        return(
+                            <List.Item>
+                                <List.Item.Meta
+                                  title={item.type}
+                                  description={`Deleted a ${item.payload.ref_type} ${item.repo.name} `}    
+                            />
+                            </List.Item>
+                        )
+                    }
+            }else if (item.type === "PullRequestEvent") {
+                return (
+                            <List.Item>
+                                <List.Item.Meta
+                                  title={item.type}
+                                  description={`Created a Pull Request ${item.payload.pull_request.title}`}    
+                            />
+                            </List.Item>
+                )
+            } else { return (<p> other </p>)}
+
     }
 
     componentDidMount() {
@@ -73,58 +181,7 @@ class Github extends React.Component {
                             <ul>
                                 {this.state.items.map(item => (
                                     <li key={item.id}>
-                                        {(() => {
-                                            if (item.type == "CreateEvent") {
-                                                if (item.payload.ref_type == "branch"){
-                                                    return (
-                                                        <p>Created a {item.payload.ref_type}  '{item.payload.ref}' in {item.repo.name} </p>
-                                                    )
-                                                } else {
-                                                    return(
-                                                        <p>Created a {item.payload.ref_type} {item.repo.name} </p>
-                                                    )
-                                                }
-                                            } else if (item.type === "PushEvent") {
-                                                return (
-                                                    <p>Created a commit in repository {item.repo.name}</p>
-                                            )
-                                            } else if (item.type === "ForkEvent") {
-                                                return (
-                                                    <p>Forked a repository {item.payload.forkee.full_name}</p>
-                                            )
-                                            } else if (item.type === "PublicEvent") {
-                                                return (
-                                                    <p> Made {item.repo.name} public</p>
-                                            )
-                                            } else if (item.type === "IssuesEvent") {
-                                                return (
-                                                    <p> Opened an issue in {item.repo.name} {item.payload.title}</p>
-                                            )
-                                            } else if (item.type === "PullRequestReviewCommentEvent") {
-                                                return (
-                                                    <p> Commented on PR in {item.repo.name} {item.payload.comment.body} </p>
-                                                )
-
-                                            }else if(item.type === "PullRequestReviewEvent") {
-                                                return (
-                                                    <p>Review Event on PR in {item.repo.name} {item.payload.review.body}</p>
-                                                )
-                                            }else if (item.type === "DeleteEvent") {
-                                                    if (item.payload.ref_type == "branch"){
-                                                            return (
-                                                            <p>Deleted a {item.payload.ref_type}  '{item.payload.ref}' in {item.repo.name} </p>
-                                                        )
-                                                    } else {
-                                                        return(
-                                                            <p>Deleted a {item.payload.ref_type} {item.repo.name} </p>
-                                                        )
-                                                    }
-                                            }else if (item.type === "PullRequestEvent") {
-                                                return (
-                                                    <p>Created a Pull Request {item.payload.pull_request.title}</p>
-                                                )
-                                            } else { return (<p> other </p>)}
-                                        })()}
+                                        {this.renderItem(item)}
                                     </li>
                                 ))}
                             </ul>
