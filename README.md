@@ -1,6 +1,10 @@
 Deployed Application
 ===================================
-https://frontend-404.herokuapp.com/
+**Frontend:** [https://frontend-404.herokuapp.com/](https://frontend-404.herokuapp.com/)
+
+**Backend:** [https://cmput404-px-backend.herokuapp.com/](https://cmput404-px-backend.herokuapp.com/)
+
+## Admin user: username : admin pw:123
 
 CMPUT404-project-socialdistribution
 ===================================
