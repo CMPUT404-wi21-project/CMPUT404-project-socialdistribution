@@ -6,11 +6,12 @@ import { Menu } from 'antd';
 import {UserOutlined, ContactsOutlined, GithubOutlined} from '@ant-design/icons';
 import AboutMe from './AboutMe';
 import EditButton from './EditButton';
+import Github from './GitHub';
 
 class PageLayout extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { key: 'aboutMe', items: [], isLoaded:false }
+        this.state = { key: 'aboutMe' }
     }    
 
     handleClick = e => {
@@ -19,24 +20,11 @@ class PageLayout extends React.Component {
 
     componentDidMount() {
 
-        var github_user = (this.props.profile.github.replace("http://github.com/", ''))
-
-        fetch('https://api.github.com/users/' + github_user + '/events')
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    items: json,
-                    isLoaded: true, 
-                })
-            }).catch((err) => {
-                console.log(err);
-            });
-
     }
 
     render() {
         //page style
-        const {key, isLoaded, items} = this.state;
+        const {key } = this.state;
         
         const pageStyle = {
             backgroundColor: 'white',
@@ -51,10 +39,7 @@ class PageLayout extends React.Component {
             textAlignVertical: 'top',            
         }
         
-        if (!isLoaded)
-            return <div>Loading...</div>;
-
-
+   
         return (
 
             <Row style={pageStyle}>
@@ -79,53 +64,9 @@ class PageLayout extends React.Component {
                             <AboutMe />
                             <EditButton />
                         </>:
-                    <p>
-                        <a href={this.props.profile.github}>
-                            <img src={"https://grass-graph.moshimo.works/images/" + (this.props.profile.github.replace("http://github.com/", '')) + ".png"}           
-                            style={{
-                                resizeMode: "center",
-                                width: 650
-                                }}>    
-                            </img>
-                        </a>     
-                        <div>
-                            <ul>
-                                {items.map(item => (
-                                    <li key={item.id}>
-                                        {(() => {
-                                        if (item.type == "CreateEvent") {
-                                            if (item.payload.ref_type == "branch"){
-                                                return (
-                                                    <li>Created a {item.payload.ref_type}  '{item.payload.ref}' in {item.repo.name} </li>
-                                                )
-                                            } else {
-                                                return(
-                                                    <li>Created a {item.payload.ref_type} {item.repo.name} </li>
-                                                )
-                                            }
-                                        } else if (item.type == "PushEvent") {
-                                            return (
-                                                <li>Created a commit in repository {item.repo.name}</li>
-                                        )
-                                        } else if (item.type == "ForkEvent") {
-                                            return (
-                                                <li>Forked a repository {item.payload.forkee.full_name}</li>
-                                        )
-                                        } else if (item.type == "PublicEvent") {
-                                            return (
-                                                <li> Made {item.repo.name} public</li>
-                                        )
-                                        } else if (item.type == "IssuesEvent") {
-                                            return (
-                                                <li> Opened an issue in {item.repo.name} {item.payload.title}</li>
-                                        )
-                                        } else { return (<li> other </li>)}
-                                        })()}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </p>}
+                        (<>
+                            <Github />
+                        </>)}
                 </Col>
             </Row>
         );
