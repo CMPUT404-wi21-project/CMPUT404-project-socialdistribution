@@ -34,7 +34,7 @@ export const loadUser = () => (dispatch, getState) => {
 }
 
 // REGISTER
-export const register = ({username, password, github_url, displayName}) => dispatch => {
+export const register = ({username, password, github, displayName}) => dispatch => {
     // Header
     const config = {
         headers: {
@@ -43,7 +43,7 @@ export const register = ({username, password, github_url, displayName}) => dispa
     } 
 
     // Request body
-    const body = JSON.stringify({username, password, github_url, displayName});
+    const body = JSON.stringify({username, password, github, displayName});
 
     axios.post(process.env.REACT_APP_HOST +
         '/author/register/', body, config)
