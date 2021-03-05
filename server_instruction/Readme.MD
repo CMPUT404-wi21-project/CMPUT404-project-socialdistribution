@@ -46,6 +46,7 @@ heroku addons:create heroku-postgresql:hobby-dev
   DEBUG=1
   PROD=1
   ```
+  - `npm install` to get all the dependencies for frontend
   - then, `git push heroku +HEAD:main`, it will deploy your current code up to the logged in app
 
 ## wait for deployment
