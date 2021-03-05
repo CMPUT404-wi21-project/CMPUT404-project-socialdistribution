@@ -5,6 +5,7 @@ from django.urls import reverse, resolve
 # View Methods
 from ..views import simpleSignupRequestView
 from ..views import authView
+from ..views import author
 from ..views import commentView
 from ..views import likeView
 from ..views import simplePostView
@@ -26,6 +27,11 @@ class TestUrls(TestCase):
     def test_check_current_author_url_resolves(self):
         url = reverse('get-current-author')
         self.assertEquals(resolve(url).func, authView.getAuthor)
+
+    # =============== Profile URLS ====================
+    def test_profile_url_resolves(self):
+        url = reverse('author-profile', args=['author_id'])
+        self.assertEquals(resolve(url).func, author.author_profile_api)
 
     # ============== Comment URLS ==================
     def test_comment_url_resolves(self):
