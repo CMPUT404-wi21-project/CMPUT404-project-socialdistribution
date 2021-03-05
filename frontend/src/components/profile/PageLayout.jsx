@@ -35,13 +35,12 @@ class PageLayout extends React.Component {
 
         return (
             <Row style={pageStyle}>
-                <Col span={8} style={{
+                <Col span={6} style={{
                     backgroundColor: 'aqua',
-                    height: '80vh',
                 }}>
 
                 </Col>
-                <Col span={16} style={rightCol}>
+                <Col span={18} style={rightCol}>
                     <h1>{this.props.profile.displayName}</h1>
                     <Menu onClick={this.handleClick} mode="horizontal" selectedKeys={[this.state.key]}>
                         <Menu.Item key="aboutMe" icon={<UserOutlined />}>

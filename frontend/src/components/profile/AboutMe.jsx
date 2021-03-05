@@ -28,7 +28,7 @@ class AboutMe extends React.Component {
         ];
 
        return (        
-            <List
+            <List style={{wordWrap: 'anywhere',}}
                 itemLayout="horizontal"
                 dataSource={aboutMe}
                 renderItem={item => (
