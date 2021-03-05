@@ -61,7 +61,10 @@ class postServices():
 
         setattr(data, key_of_update, value_of_update)
       data.save()
-      return Response(status=status.HTTP_200_OK)
+
+      res = Response(status=status.HTTP_200_OK)
+      res.data = body
+      return res
 
     except:
       return Response(status=status.HTTP_400_BAD_REQUEST)
