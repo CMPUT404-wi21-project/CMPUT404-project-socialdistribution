@@ -69,15 +69,15 @@ class myPostsPage extends React.Component {
   renderSwitch(contentType, content) {
         switch (contentType) {
             case 'text/plain':
-                return <div style={{textAlign: 'left', marginTop: '10px'}}>{content}</div>;
+                return <div style={{textAlign: 'left', marginTop: '10px', wordWrap: 'break-word'}}>{content}</div>;
             case 'text/markdown':
-                return <div style={{textAlign: 'left', marginTop: '10px'}}><ReactMarkdown plugins={[gfm]} children={content}/> </div>;
+                return <div style={{textAlign: 'left', marginTop: '10px', wordWrap: 'break-word'}}><ReactMarkdown plugins={[gfm]} children={content}/> </div>;
             case "image/png;base64":
-              return <img src={content} width="300px" style={{textAlign: 'center', marginTop: '10px'}}></img>;
+              return <img src={content} width="300px" style={{textAlign: 'center', marginTop: '10px', maxHeight: '80%', maxWidth: '80%'}}></img>;
             case "image/jpeg;base64":
-              return <img src={content} width="300px" style={{textAlign: 'center', marginTop: '10px'}}></img>;
+              return <img src={content} width="300px" style={{textAlign: 'center', marginTop: '10px', maxHeight: '80%', maxWidth: '80%'}}></img>;
             default:
-                return <div style={{textAlign: 'left', marginTop: '10px'}}>{content}</div>;
+                return <div style={{textAlign: 'left', marginTop: '10px', wordWrap: 'break-word'}}>{content}</div>;
         }
   }
 
