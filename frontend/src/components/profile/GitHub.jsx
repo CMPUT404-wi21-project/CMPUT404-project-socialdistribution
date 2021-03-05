@@ -14,14 +14,21 @@ class Github extends React.Component {
         msg: null,
         username: this.props.profile.github,
     }
-
+    
     parseUrl(url) {
         if (url === "") {
             return url; // Let the code fail
         }
         let url_split = url.toString().split("/");
+        console.log(url_split);
+        let name = url_split.pop();
 
-        return url_split.pop();
+        // Case where the url ended with a /
+        if (name == "") {
+            name = url_split.pop();
+        }
+
+        return name;
     }
 
     renderItem(item) {
