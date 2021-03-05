@@ -51,6 +51,7 @@ class PageLayout extends React.Component {
         
         if (!isLoaded)
             return <div>Loading...</div>;
+        
 
 
         return (
@@ -90,7 +91,7 @@ class PageLayout extends React.Component {
                             <ul>
                                 {items.map(item => (
                                     <li key={item.id}>
-                                        Name: {item.type} | Email: {item.event}
+                                        Name: {item.type} | Email: {item.repo.name}
                                     </li>
                                 ))}
                             </ul>
