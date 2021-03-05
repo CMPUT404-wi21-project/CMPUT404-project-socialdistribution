@@ -20,7 +20,6 @@ class Github extends React.Component {
             return url; // Let the code fail
         }
         let url_split = url.toString().split("/");
-        console.log(url_split);
         let name = url_split.pop();
 
         // Case where the url ended with a /
