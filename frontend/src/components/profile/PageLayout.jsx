@@ -51,7 +51,6 @@ class PageLayout extends React.Component {
         
         if (!isLoaded)
             return <div>Loading...</div>;
-        
 
 
         return (
@@ -91,7 +90,31 @@ class PageLayout extends React.Component {
                             <ul>
                                 {items.map(item => (
                                     <li key={item.id}>
-                                        Name: {item.type} | Email: {item.repo.name}
+                                        {(() => {
+                                        if (item.type == "CreateEvent") {
+                                            if (item.payload.ref_type == "branch"){
+                                                return (
+                                                    <li>Created a {item.payload.ref_type}  '{item.payload.ref}' in {item.repo.name} </li>
+                                                )
+                                            } else {
+                                                return(
+                                                    <li>Created a {item.payload.ref_type} {item.repo.name} </li>
+                                                )
+                                            }
+                                        } else if (item.type == "PushEvent") {
+                                        return (
+                                            <li>Created a commit in repository {item.repo.name}</li>
+                                        )
+                                        } else if (item.type == "ForkEvent") {
+                                        return (
+                                            <li>Forked a repository {item.payload.forkee.full_name}</li>
+                                        )
+                                        } else {
+                                        return (
+                                            <li>other</li>
+                                        )
+                                        }
+                                        })()}
                                     </li>
                                 ))}
                             </ul>
