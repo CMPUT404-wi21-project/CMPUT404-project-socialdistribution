@@ -19,7 +19,9 @@ class PageLayout extends React.Component {
 
     componentDidMount() {
 
-        fetch('https://api.github.com/users/GillisGill/events')
+        var github_user = (this.props.profile.github.replace("http://github.com/", ''))
+
+        fetch('https://api.github.com/users/' + github_user + '/events')
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -102,18 +104,22 @@ class PageLayout extends React.Component {
                                                 )
                                             }
                                         } else if (item.type == "PushEvent") {
-                                        return (
-                                            <li>Created a commit in repository {item.repo.name}</li>
+                                            return (
+                                                <li>Created a commit in repository {item.repo.name}</li>
                                         )
                                         } else if (item.type == "ForkEvent") {
-                                        return (
-                                            <li>Forked a repository {item.payload.forkee.full_name}</li>
+                                            return (
+                                                <li>Forked a repository {item.payload.forkee.full_name}</li>
                                         )
-                                        } else {
-                                        return (
-                                            <li>other</li>
+                                        } else if (item.type == "PublicEvent") {
+                                            return (
+                                                <li> Made {item.repo.name} public</li>
                                         )
-                                        }
+                                        } else if (item.type == "IssuesEvent") {
+                                            return (
+                                                <li> Opened an issue in {item.repo.name} {item.payload.title}</li>
+                                        )
+                                        } else { return (<li> other </li>)}
                                         })()}
                                     </li>
                                 ))}
