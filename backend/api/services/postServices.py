@@ -5,6 +5,7 @@ from .authorServices import getAuthorJsonById
 from rest_framework import status
 from rest_framework.response import Response
 from django.core import serializers
+from django.core.paginator import Paginator
 import json, sys, base64, requests
 
 class postServices():
@@ -126,11 +127,33 @@ class postServices():
   # paginated post json objects
   ##############################################
   @staticmethod
-  def getPaginatedPosts(res, pageNum):
+  def getPaginatedPosts(request, res, author_id, pageNum):
     data = res.data
     pageSize = 50
-    pasgedData = data[pageSize * pageNum: pageSize * (pageNum+1)]
-    return Response(pasgedData)
+    # create paginator object
+    post_paginator = Paginator(data, pageSize)
+
+    page = post_paginator.get_page(pageNum)
+    print(page.object_list)
+    prev_page = ""
+    next_page = ""
+
+    if page.has_previous():
+      # Create a link to the previous page
+      prev_page = f"{request.build_absolute_uri(request.path)}?page={page.previous_page_number()}&size={pageSize}"
+    if page.has_next():
+      next_page = f"{request.build_absolute_uri(request.path)}?page={page.next_page_number()}&size={pageSize}"
+
+    for i in range(len(page.object_list)):
+      page.object_list[i] = postServices.formatJSONpost(request, page.object_list[i], author_id, page.object_list[i]['post_id']).data
+
+    context = {
+      'count': post_paginator.count,
+      'posts': page.object_list,
+      'next': next_page,
+      'prev': prev_page,
+    }
+    return Response(context)
 
   ##############################################
   # format the raw json into formatted desired json response
