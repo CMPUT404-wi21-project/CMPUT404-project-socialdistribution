@@ -127,14 +127,11 @@ class postServices():
   # paginated post json objects
   ##############################################
   @staticmethod
-  def getPaginatedPosts(request, res, author_id, pageNum):
+  def getPaginatedPosts(request, res, author_id, pageNum, pageSize):
     data = res.data
-    pageSize = 50
     # create paginator object
     post_paginator = Paginator(data, pageSize)
-
     page = post_paginator.get_page(pageNum)
-    print(page.object_list)
     prev_page = ""
     next_page = ""
 
@@ -166,18 +163,20 @@ class postServices():
   #################################################
   def formatJSONpost(request, post, author_id, post_id = ''):
 
+    urlParts= request.build_absolute_uri().split('posts')
     formedJsonRes = {}
     formedJsonRes['type'] = 'post'
     formedJsonRes['title'] = post['title']
-    formedJsonRes['id'] = request.build_absolute_uri() + post_id
+    formedJsonRes['id'] = urlParts[0] + 'posts/' + post_id
+
     if 'source' in post.keys():
       formedJsonRes['source'] = post['source']
     else:
-      formedJsonRes['source'] = request.build_absolute_uri() + post_id
+      formedJsonRes['source'] = urlParts[0] + 'posts/' + post_id
     if post['origin_post_url']:
       formedJsonRes['origin'] = post['origin_post_url']
     else:
-      formedJsonRes['origin'] = request.build_absolute_uri() + post_id
+      formedJsonRes['origin'] = urlParts[0] + 'posts/' + post_id
     formedJsonRes['description'] = post['description']
     formedJsonRes['contentType'] = post['contentType']
     formedJsonRes['content'] = post['content']

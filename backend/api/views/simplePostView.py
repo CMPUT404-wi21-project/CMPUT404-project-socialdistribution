@@ -37,13 +37,13 @@ def createNewPost(request, author_id):
 # author_id, uuid
 # pageNum, optional, int
 #####################################
-def getPostsByAuthorId(request, author_id, pageNum = 1):
-  if 'pageNum' in request.data.keys():
-    pageNum = int(request.data.dict()['pageNum'])
+def getPostsByAuthorId(request, author_id, pageNum = 1, pageSize = 1):
+  pageNum = request.GET.get('pageNum')
+  pageSize = request.GET.get('pageSize')
   res = postServices.getPostByAuthorId(request, author_id)
   if res.status_code == 404:
     return res
-  return postServices.getPaginatedPosts(request, res, author_id, pageNum)
+  return postServices.getPaginatedPosts(request, res, author_id, pageNum, pageSize)
 
 ############################################
 # request: get, post

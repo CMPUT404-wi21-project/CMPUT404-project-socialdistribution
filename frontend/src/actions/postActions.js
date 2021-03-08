@@ -67,10 +67,10 @@ export const editPost = (post,id) => (dispatch, getState) => {
 }
 
 // GET POSTS by authorID
-export const getCurAuthorPosts = () => (dispatch, getState) => {
+export const getCurAuthorPosts = (pageNum, size) => (dispatch, getState) => {
     dispatch({ type: GET_AUTHOR_POSTS })
     axios.get(process.env.REACT_APP_HOST +
-        `/author/${getState().auth.user.pk}/posts/`, tokenConfig(getState))
+        `/author/${getState().auth.user.pk}/posts/?pageNum=${pageNum}&pageSize=${size}`, tokenConfig(getState))
         .then(res => dispatch({
             type: GET_AUTHOR_POST_SUCCESS,
             payload: res.data,
