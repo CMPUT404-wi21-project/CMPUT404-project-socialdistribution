@@ -12,9 +12,9 @@ class Friend(models.Model):
     # The author whose is primary in this relationship
     author_id = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="my_author_id")
 
-    # The friend of this author
+    # The friends of this author
     # obs
-    my_friends_id = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="my_friends_id")
+    # my_friends_id = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="my_friends_id")
     
     # The friends of this author
     friends = models.ManyToManyField(Author, related_name="friends", blank=True)
