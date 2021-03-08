@@ -6,8 +6,8 @@ from django.http import HttpResponse
 import json
 
 from ..models.author import Author
-from ..models.friend import FriendRequest
-from ..models.friend import add_friend, remove_friend, unfriend, is_follower
+from ..models.friend import FriendRequest, Friend
+#from ..models.friend import add_friend, remove_friend, unfriend, is_follower
 from ..services.followerservices import get_followers
 
 @api_view(['PUT'])
@@ -103,3 +103,88 @@ def get_all_follower(request):
         payload['response'] = "No User"
     return HttpResponse(json.dumps(payload), content_type="application/json")
 
+@api_view(['PUT'])
+def accept_friend_request(request, *args, **kwargs):
+    user = request.user
+    payload = {}
+    if request.method == "PUT" and user.is_authenticated:
+        user_id = request.PUT.get("receiver_user_id")
+        if user_id:
+            receiver = Author.objects.get(pk=user_id)
+            try:
+                friend_requests = FriendRequest.object.filter(sender=user, receiver=receiver)
+                try: 
+                    for request in friend_requests:
+                        if request.is_active:
+                            request.accept()
+                            request.save()
+                except Exception as e:
+                    payload['response'] = str(e)
+            except FriendRequest.DoesNotExist:
+                payload['response'] = "No request to accept"
+
+            if payload['response'] == None:
+                payload['response'] = "Something went wrong."
+        else:
+            payload['response'] = "Unable to accept friend request."
+    else: 
+        payload['response'] = "You must be authenticated to accept friend request."
+    return HttpResponse(json.dumps(payload), content_type="application/json")
+
+
+@api_view(['DELETE'])
+def decline_friend_request(request, *args, **kwargs):
+    user = request.user
+    payload = {}
+    if request.method == "DELETE" and user.is_authenticated:
+        user_id = request.PUT.get("receiver_user_id")
+        if user_id:
+            receiver = Author.objects.get(pk=user_id)
+            try:
+                friend_requests = FriendRequest.object.filter(sender=user, receiver=receiver)
+                try: 
+                    for request in friend_requests:
+                        if request.is_active:
+                            request.decline()
+                            request.save()
+                except Exception as e:
+                    payload['response'] = str(e)
+            except FriendRequest.DoesNotExist:
+                payload['response'] = "No request to decline"
+
+            if payload['response'] == None:
+                payload['response'] = "Something went wrong."
+        else:
+            payload['response'] = "Unable to decline friend request."
+    else: 
+        payload['response'] = "You must be authenticated to decline friend request."
+    return HttpResponse(json.dumps(payload), content_type="application/json")
+
+
+@api_view(['DELETE'])
+def cancel_friend_request(request, *args, **kwargs):
+    user = request.user
+    payload = {}
+    if request.method == "DELETE" and user.is_authenticated:
+        user_id = request.PUT.get("receiver_user_id")
+        if user_id:
+            receiver = Author.objects.get(pk=user_id)
+            try:
+                friend_requests = FriendRequest.object.filter(sender=user, receiver=receiver)
+                try: 
+                    for request in friend_requests:
+                        if request.is_active:
+                            request.cancel()
+                            request.save()
+                except Exception as e:
+                    payload['response'] = str(e)
+            except FriendRequest.DoesNotExist:
+                payload['response'] = "No request to accept"
+
+            if payload['response'] == None:
+                payload['response'] = "Something went wrong."
+        else:
+            payload['response'] = "Unable to cancel friend request."
+    else: 
+        payload['response'] = "You must be authenticated to cancel friend request."
+    return HttpResponse(json.dumps(payload), content_type="application/json")

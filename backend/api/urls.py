@@ -41,5 +41,9 @@ urlpatterns = [
     path('author/<str:follower>/followers/<str:followee>',friend.send_friend_request,name="friend-request"), # PUT
     path('author/<str:follower>/followers/<str:followee>',friend.get_follower,name="check-follower"), # GET
     path('author/<str:follower>/followers/<str:followee>',friend.delete_follower,name="delete-follower"), # DELETE
+
+    path('author/',friend.accept_friend_request,name="accept-friend-request"), # PUT
+    path('author/',friend.decline_friend_request,name="decline-friend-request"), # DELETE
+    path('author/',friend.cancel_friend_request,name="cancel-friend-request"), # DELETE
 ]
 
