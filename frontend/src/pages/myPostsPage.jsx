@@ -29,27 +29,32 @@ class myPostsPage extends React.Component {
     this.getEditedIndex = this.getEditedIndex.bind(this);
     this.openEditModal = this.openEditModal.bind(this);
     this.closeEditModal = this.closeEditModal.bind(this);
-    this.state = {posts: [], openEditModal: false};
+    this.setPageNum = this.setPageNum.bind(this);
+    this.state = {posts: [], openEditModal: false,};
     this.state1 = {posts: []};
     this.editedIndex = -1;
     this.index = -1;
+    this.pageNum = 1;
+    this.pageSize = 1;
   }
 
   componentDidMount = () =>{
     // get posts when render the component
-    this.props.getCurAuthorPosts();
+    this.props.getCurAuthorPosts(this.pageNum, this.pageSize);
   }
 
   componentDidUpdate = () => {
     if (this.props.postsCreated){
-      this.props.getCurAuthorPosts();
+      this.props.getCurAuthorPosts(this.pageNum, this.pageSize);
     }
 
     if (!this.props.isLoading && this.state.posts.length != this.props.posts.length){
       this.addPostsIntoList(this.props.posts);
     }
-
-    const isEdited = (JSON.stringify(this.props.posts[this.editedIndex]) !== JSON.stringify(this.state1.posts[this.editedIndex]))
+    let isEdited = false;
+    if (this.props.posts){
+      isEdited = (JSON.stringify(this.props.posts[this.editedIndex]) !== JSON.stringify(this.state1.posts[this.editedIndex]))
+    }
     if (!this.props.isLoading && this.editedIndex != -1 && isEdited){
       this.addPostsIntoList(this.props.posts);
       this.editedIndex = -1;
@@ -83,6 +88,13 @@ class myPostsPage extends React.Component {
 
   getEditedIndex = (index) =>{
     this.editedIndex = index;
+  }
+
+  setPageNum = (num, size) => {
+    this.pageNum = num;
+    this.pageSize = size;
+    this.props.getCurAuthorPosts(this.pageNum, this.pageSize);
+    this.addPostsIntoList(this.props.posts);
   }
 
   addPostsIntoList = (posts) => {
@@ -192,7 +204,7 @@ class myPostsPage extends React.Component {
           )}
         </>
         <Row style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px"}}>
-          <PaginationModal/>
+          <PaginationModal setPageNum={this.setPageNum}/>
         </Row>
     </>
    ); 
@@ -202,7 +214,7 @@ class myPostsPage extends React.Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
-  posts: state.post.posts,
+  posts: state.post.posts.posts,
   isLoading: state.post.isLoading,
   postsCreated: state.post.postsCreated,
 });

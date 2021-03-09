@@ -5,6 +5,7 @@ from .authorServices import getAuthorJsonById
 from rest_framework import status
 from rest_framework.response import Response
 from django.core import serializers
+from django.core.paginator import Paginator
 import json, sys, base64, requests
 
 class postServices():
@@ -126,11 +127,30 @@ class postServices():
   # paginated post json objects
   ##############################################
   @staticmethod
-  def getPaginatedPosts(res, pageNum):
+  def getPaginatedPosts(request, res, author_id, pageNum, pageSize):
     data = res.data
-    pageSize = 50
-    pasgedData = data[pageSize * pageNum: pageSize * (pageNum+1)]
-    return Response(pasgedData)
+    # create paginator object
+    post_paginator = Paginator(data, pageSize)
+    page = post_paginator.get_page(pageNum)
+    prev_page = ""
+    next_page = ""
+
+    if page.has_previous():
+      # Create a link to the previous page
+      prev_page = f"{request.build_absolute_uri(request.path)}?page={page.previous_page_number()}&size={pageSize}"
+    if page.has_next():
+      next_page = f"{request.build_absolute_uri(request.path)}?page={page.next_page_number()}&size={pageSize}"
+
+    for i in range(len(page.object_list)):
+      page.object_list[i] = postServices.formatJSONpost(request, page.object_list[i], author_id, page.object_list[i]['post_id']).data
+
+    context = {
+      'count': post_paginator.count,
+      'posts': page.object_list,
+      'next': next_page,
+      'prev': prev_page,
+    }
+    return Response(context)
 
   ##############################################
   # format the raw json into formatted desired json response
@@ -143,18 +163,20 @@ class postServices():
   #################################################
   def formatJSONpost(request, post, author_id, post_id = ''):
 
+    urlParts= request.build_absolute_uri().split('posts')
     formedJsonRes = {}
     formedJsonRes['type'] = 'post'
     formedJsonRes['title'] = post['title']
-    formedJsonRes['id'] = request.build_absolute_uri() + post_id
+    formedJsonRes['id'] = urlParts[0] + 'posts/' + post_id
+
     if 'source' in post.keys():
       formedJsonRes['source'] = post['source']
     else:
-      formedJsonRes['source'] = request.build_absolute_uri() + post_id
+      formedJsonRes['source'] = urlParts[0] + 'posts/' + post_id
     if post['origin_post_url']:
       formedJsonRes['origin'] = post['origin_post_url']
     else:
-      formedJsonRes['origin'] = request.build_absolute_uri() + post_id
+      formedJsonRes['origin'] = urlParts[0] + 'posts/' + post_id
     formedJsonRes['description'] = post['description']
     formedJsonRes['contentType'] = post['contentType']
     formedJsonRes['content'] = post['content']
