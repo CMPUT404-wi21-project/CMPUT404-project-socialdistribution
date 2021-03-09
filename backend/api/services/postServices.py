@@ -162,26 +162,27 @@ class postServices():
   # return: formatted json response
   #################################################
   def formatJSONpost(request, post, author_id, post_id = ''):
-
-    urlParts= request.build_absolute_uri().split('posts')
+    urlParts= 'http://' + request.get_host() + '/author/' + author_id + '/posts/' + post_id
     formedJsonRes = {}
     formedJsonRes['type'] = 'post'
     formedJsonRes['title'] = post['title']
-    formedJsonRes['id'] = urlParts[0] + 'posts/' + post_id
+    formedJsonRes['id'] = urlParts
 
     if 'source' in post.keys():
       formedJsonRes['source'] = post['source']
     else:
-      formedJsonRes['source'] = urlParts[0] + 'posts/' + post_id
+      formedJsonRes['source'] = urlParts
     if post['origin_post_url']:
       formedJsonRes['origin'] = post['origin_post_url']
     else:
-      formedJsonRes['origin'] = urlParts[0] + 'posts/' + post_id
+      formedJsonRes['origin'] = urlParts
     formedJsonRes['description'] = post['description']
     formedJsonRes['contentType'] = post['contentType']
     formedJsonRes['content'] = post['content']
-
-    formedJsonRes['author'] = getAuthorJsonById(author_id).data
+    if post['author_id']:
+      formedJsonRes['author'] = getAuthorJsonById(post['author_id']).data
+    else:
+      formedJsonRes['author'] = getAuthorJsonById(author_id).data
     formedJsonRes['categories'] = post['categories']
     if 'count' in post.keys():
       formedJsonRes['count'] = post['count']
@@ -197,3 +198,21 @@ class postServices():
     formedJsonRes['unlisted'] = post['unlisted']
 
     return Response(formedJsonRes)
+
+
+  def getVisiblePosts(request, author_id):
+    res = []
+    posts = post.Post.objects.all()
+    for po in posts:
+      authors = po.get_visible_authors()
+      if len(authors) > 0:
+        for author in list(authors.values()):
+          if str(author['id']) == str(author_id):
+            data = serializers.serialize('json', [po,])
+            data = json.loads(data)[0]['fields']
+            postId = data['url'].split('/')[-1]
+            data = postServices.formatJSONpost(request, data, author_id, postId).data
+            res.append(data)
+    if len(res) > 0:
+      return Response(res)
+    return Response(status=status.HTTP_404_NOT_FOUND)

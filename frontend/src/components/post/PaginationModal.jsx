@@ -4,8 +4,8 @@ import { Pagination } from 'antd';
 
 class PaginationModal extends React.Component {
   state = {
-    current: 1,
-    size: 1,
+    current: this.props.pageNum,
+    size: this.props.pageSize,
   };
 
   componentDidUpdate = () => {
@@ -25,7 +25,7 @@ class PaginationModal extends React.Component {
   }
 
   render() {
-    return <Pagination current={this.state.current} pageSize={this.state.size} onChange={this.onChange}
+    return <Pagination current={parseInt(this.state.current)} pageSize={this.state.size} onChange={this.onChange}
      total={this.props.postPerPage ? this.props.postPerPage : 0} onShowSizeChange={this.onShowSizeChange}
      showSizeChanger={true} pageSizeOptions={[1, 10, 20, 50, 100]}/>;
   }

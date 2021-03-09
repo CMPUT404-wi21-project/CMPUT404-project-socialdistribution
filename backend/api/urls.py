@@ -10,6 +10,7 @@ urlpatterns = [
     path('', index.index, name="index"),
     
     # Post endpoints
+    path(r'author/<str:author_id>/stream/', simplePostView.getStreamPosts, name="get-stream-posts-view"),
     path(r'author/<str:author_id>/posts/', simplePostView.handlePostByAuthorId, name="handle-posts-view"),
     path(r'author/<str:author_id>/posts/<str:post_id>', simplePostView.handlePostByPostId, name="handle-single-post-view"),
 

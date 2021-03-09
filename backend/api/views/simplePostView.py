@@ -38,8 +38,10 @@ def createNewPost(request, author_id):
 # pageNum, optional, int
 #####################################
 def getPostsByAuthorId(request, author_id, pageNum = 1, pageSize = 1):
-  pageNum = request.GET.get('pageNum')
-  pageSize = request.GET.get('pageSize')
+  if 'pageNum' in request.GET.keys():
+    pageNum = request.GET.get('pageNum')
+  if 'pageSize' in request.GET.keys():
+    pageSize = request.GET.get('pageSize')
   res = postServices.getPostByAuthorId(request, author_id)
   if res.status_code == 404:
     return res
@@ -82,7 +84,7 @@ def getPost(request, author_id, post_id):
   res = postServices.getPostByPostId(request, post_id, author_id)
   if res.status_code == 404:
     return res
-  formatedRes = postServices.formatJSONpost(request, res.data, author_id)
+  formatedRes = postServices.formatJSONpost(request, res.data, author_id, post_id)
   return formatedRes
 
 
@@ -96,6 +98,18 @@ def deletePost(request, author_id, post_id):
 
 # method for same link goes down to here
 # post, delete, put
+
+#############################################
+# input
+#     request, author_id
+# output
+#      the stream posts of current user with status code 200
+#       or 404 not found
+############################################
+@api_view(['GET'])
+def getStreamPosts(request, author_id):
+  res = postServices.getVisiblePosts(request, author_id)
+  return res
 
 #############################################
 # please implement next post related api point here

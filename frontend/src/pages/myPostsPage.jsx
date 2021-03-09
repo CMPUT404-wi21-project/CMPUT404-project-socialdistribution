@@ -34,8 +34,16 @@ class myPostsPage extends React.Component {
     this.state1 = {posts: []};
     this.editedIndex = -1;
     this.index = -1;
-    this.pageNum = 1;
-    this.pageSize = 1;
+    if (!localStorage.getItem('myPageNum')){
+      this.pageNum = 1;
+    }else{
+      this.pageNum = localStorage.getItem('myPageNum');
+    }
+    if (!localStorage.getItem('myPageSize')){
+      this.pageSize = 1;
+    }else{
+      this.pageSize = localStorage.getItem('myPageSize');
+    }
   }
 
   componentDidMount = () =>{
@@ -95,6 +103,9 @@ class myPostsPage extends React.Component {
     this.pageSize = size;
     this.props.getCurAuthorPosts(this.pageNum, this.pageSize);
     this.addPostsIntoList(this.props.posts);
+    // store in local storage
+    localStorage.setItem('myPageNum', this.pageNum);
+    localStorage.setItem('myPageSize', this.pageSize);
   }
 
   addPostsIntoList = (posts) => {
@@ -204,7 +215,7 @@ class myPostsPage extends React.Component {
           )}
         </>
         <Row style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px"}}>
-          <PaginationModal setPageNum={this.setPageNum}/>
+          <PaginationModal setPageNum={this.setPageNum} pageNum={this.pageNum} pageSize={this.pageSize}/>
         </Row>
     </>
    ); 
