@@ -107,9 +107,16 @@ def deletePost(request, author_id, post_id):
 #       or 404 not found
 ############################################
 @api_view(['GET'])
-def getStreamPosts(request, author_id):
+def getStreamPosts(request, author_id, pageNum = 1, pageSize = 1):
+  if 'pageNum' in request.GET.keys():
+    pageNum = request.GET.get('pageNum')
+  if 'pageSize' in request.GET.keys():
+    pageSize = request.GET.get('pageSize')
   res = postServices.getVisiblePosts(request, author_id)
-  return res
+  if res.status_code == 404:
+    return res
+
+  return postServices.getPaginatedPosts(request, res, author_id, pageNum, pageSize)
 
 #############################################
 # please implement next post related api point here

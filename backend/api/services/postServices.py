@@ -140,7 +140,6 @@ class postServices():
       prev_page = f"{request.build_absolute_uri(request.path)}?page={page.previous_page_number()}&size={pageSize}"
     if page.has_next():
       next_page = f"{request.build_absolute_uri(request.path)}?page={page.next_page_number()}&size={pageSize}"
-
     for i in range(len(page.object_list)):
       page.object_list[i] = postServices.formatJSONpost(request, page.object_list[i], author_id, page.object_list[i]['post_id']).data
 
@@ -201,18 +200,28 @@ class postServices():
 
 
   def getVisiblePosts(request, author_id):
-    res = []
-    posts = post.Post.objects.all()
-    for po in posts:
-      authors = po.get_visible_authors()
-      if len(authors) > 0:
-        for author in list(authors.values()):
-          if str(author['id']) == str(author_id):
-            data = serializers.serialize('json', [po,])
-            data = json.loads(data)[0]['fields']
-            postId = data['url'].split('/')[-1]
-            data = postServices.formatJSONpost(request, data, author_id, postId).data
-            res.append(data)
-    if len(res) > 0:
+    try:
+      res = []
+      temp = []
+      posts = post.Post.objects.all()
+      postsData = serializers.serialize('json', posts)
+      postsData = json.loads(postsData)
+      postsData = sorted(postsData, key=lambda d: d['fields']["published"], reverse=True)
+      for po in posts:
+        authors = po.get_visible_authors()
+        if len(authors) > 0:
+          for author in list(authors.values()):
+            if str(author['id']) == str(author_id):
+              data = serializers.serialize('json', [po, ])
+              data = json.loads(data)[0]['fields']
+              temp.append(str(data['url']))
+
+      for i in range(len(postsData)):
+        postsData[i] = postsData[i]['fields']
+        if postsData[i]['url'] in temp:
+          postId = postsData[i]['url'].split('/')[-1]
+          postsData[i]['post_id'] = postId
+          res.append(postsData[i])
       return Response(res)
-    return Response(status=status.HTTP_404_NOT_FOUND)
+    except:
+      return Response(status=status.HTTP_404_NOT_FOUND)

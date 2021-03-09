@@ -83,6 +83,23 @@ export const getCurAuthorPosts = (pageNum, size) => (dispatch, getState) => {
         });
 }
 
+// GET STREAM POSTS by authorID
+export const getAuthorStreamPosts = (pageNum, size) => (dispatch, getState) => {
+    dispatch({ type: GET_AUTHOR_POSTS })
+    axios.get(process.env.REACT_APP_HOST +
+        `/author/${getState().auth.user.pk}/stream/?pageNum=${pageNum}&pageSize=${size}`, tokenConfig(getState))
+        .then(res => dispatch({
+            type: GET_AUTHOR_POST_SUCCESS,
+            payload: res.data,
+        }))
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status, "GET_AUTHOR_POST_FAIL"));
+            dispatch({
+                type: GET_AUTHOR_POST_FAIL,
+            });
+        });
+}
+
 // DELETE POSTS by authorID and PostID
 export const deletePost = (id) => (dispatch, getState) => {
     dispatch({ type: DELETE_POST })

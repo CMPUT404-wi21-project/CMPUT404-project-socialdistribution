@@ -218,7 +218,7 @@ class myPostsPage extends React.Component {
           <PaginationModal setPageNum={this.setPageNum} pageNum={this.pageNum} pageSize={this.pageSize}/>
         </Row>
     </>
-   ); 
+   );
   }
 }
 
