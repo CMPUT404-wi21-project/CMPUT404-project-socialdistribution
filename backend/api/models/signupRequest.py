@@ -18,6 +18,17 @@ def validate_username_nonexist_in_author(the_username):
         raise ValidationError(
             _(f'Username "{the_username}" is already taken.'),
         )
+
+# Validate github link, raise error if not contain prefix 
+# arg   
+#       str:github
+# return
+#       None
+def validate_github_format(the_github):    
+    if(the_github.strip()[0:19] != "https://github.com/"):
+        raise ValidationError(
+            _(f'This is not a github link.'),
+        )
     
     
 # model: store sign up requests for admin to accept or decline
@@ -33,7 +44,7 @@ class Signup_Request(models.Model):
     password    =   models.CharField(max_length=128, verbose_name='password')
 
     # Github page
-    github     =   models.URLField(default='http://github.com/' ,max_length=500)
+    github     =   models.URLField(validators=[validate_github_format], max_length=500)
 
     # Which host this user was created on
     host        =   models.URLField(max_length=500)
