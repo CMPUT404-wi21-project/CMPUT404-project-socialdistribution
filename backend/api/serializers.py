@@ -24,7 +24,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class SignupSerializer(serializers.ModelSerializer):
   class Meta:
     model = signupRequest.Signup_Request
-    fields = ['username','password','github', 'host', 'displayName']
+    fields = ['username','password', 'displayName','github', 'host']
 
 # COMMENT SERIALIZER
 class CommentSerializer(serializers.ModelSerializer):

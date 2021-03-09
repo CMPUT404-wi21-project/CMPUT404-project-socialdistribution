@@ -18,8 +18,8 @@ import {clearErrors} from '../../actions/errorActions';
 
 class RegisterForm extends React.Component {
     state = {
-        msg: null,
-        msg_type: null    
+        msgs: [],
+        msg_type: null ,   
     };
 
     componentDidUpdate(prevProps) {
@@ -27,14 +27,14 @@ class RegisterForm extends React.Component {
         if (error !== prevProps.error) {
             // Check for a register error
             if (error.id === 'REGISTER_FAIL') {
-               this.setState({msg: error.msg, msg_type: "error"}); 
+               this.setState({msgs: error.msgs, msg_type: "error"}); 
             } else {
-                this.setState({msg: null, msg_type: null});
+                this.setState({msgs: null, msgs_type: null});
             }
             // This should be authenticated routing
         } else if (isRegistered != prevProps.isRegistered) {
             // Send the user to the homepage
-            this.setState({msg: "Successfully Registered! Please await admin approval before Login!", msg_type: "success"})
+            this.setState({msgs: "Successfully Registered! Please await admin approval before Login!", msg_type: "success"})
         }
     }
 
@@ -47,10 +47,12 @@ class RegisterForm extends React.Component {
         this.props.register(values);
     }
 
+    
     render() {
         if (this.props.isAuthenticated) {
             return <Redirect to="/Home"/>
         }
+
         return (
         <Form
           name="normal_login"
@@ -58,13 +60,20 @@ class RegisterForm extends React.Component {
           initialValues={{ remember: true }}
           onFinish={this.onRegister}
         >
-          {this.state.msg? <Alert message={this.state.msg} type={this.state.msg_type} />: null}
+          {this.state.msgs &&
+            this.state.msgs.map(([key, value]) =>
+              <Alert message={key + ": " + value} type={this.state.msg_type} />
+            )            
+          }
+          
+          <br/>
           <Form.Item
             name="username"
             rules={[{ required: true, message: 'Please input your Username!' }]}
           >
             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
           </Form.Item>
+          
           <Form.Item
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
@@ -75,17 +84,19 @@ class RegisterForm extends React.Component {
               placeholder="Password"
             />
           </Form.Item>
+          
           <Form.Item
             name="displayName"
             rules={[{ required: true, message: 'Please input your display name!' }]}
           >
             <Input prefix={<FontSizeOutlined />} placeholder="Display Name" />
           </Form.Item>
+          
           <Form.Item
             name="github"
-            rules={[{ required: false, message: 'Please input your Github URL!' }]}
+            rules={[{ required: true, message: 'Please input your Github URL!' }]}
           >
-            <Input prefix={<GithubOutlined />} placeholder="Github URL(Optional)" />
+            <Input prefix={<GithubOutlined />} placeholder="Github URL" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" className="lgin-form-button">

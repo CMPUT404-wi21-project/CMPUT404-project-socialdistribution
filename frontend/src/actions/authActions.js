@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {returnErrors} from './errorActions';
+import {returnErrors, returnMultiErrors} from './errorActions';
 
 import {
     USER_LOADED,
@@ -51,10 +51,7 @@ export const register = ({username, password, github, displayName}) => dispatch 
             type: REGISTER_SUCCESS,
         }))
         .catch(err => {
-            if (err.response.data.username) {
-                err.response.data = err.response.data.username;
-            }
-            dispatch(returnErrors(err.response.data, err.response.status, "REGISTER_FAIL"));
+            dispatch(returnMultiErrors(Object.entries(err.response.data), err.response.status, "REGISTER_FAIL"));
             dispatch({type: REGISTER_FAIL});
         });
 }

@@ -11,6 +11,7 @@ export const REGISTER_FAIL              = "REGISTER_FAIL";
 // ERROR HANDLING TYPES
 export const GET_ERRORS                 = "GET_ERRORS";
 export const CLEAR_ERRORS               = "CLEAR_ERRORS";
+export const GET_MULTI_ERRORS           = "GET_MULTI_ERRORS";
 
 // POST TYPES
 export const GET_AUTHOR_POSTS           = "GET_AUTHOR_POSTS";
