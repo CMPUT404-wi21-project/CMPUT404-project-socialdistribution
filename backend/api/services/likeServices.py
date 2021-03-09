@@ -47,6 +47,7 @@ class likeServices():
             return Response("Only Posts or Comments can be liked",HTTP_400_BAD_REQUEST)
 
         # TODO: Should liking again be prevented here?
+        
 
         # TODO: VISIBILITY CHECKS should be performed here when friend models and follower models are functioning
 
@@ -59,6 +60,8 @@ class likeServices():
         likeInstanceSerialized = json.loads(serializers.serialize('json', [likeInstance]))[0]['fields']
 
         # Step 2: SEND TO INBOX of the specified author_id
+        
+        # Prepare the inbox object
         # TODO: Dealing with inbox will be done after inbox is more cleanly worked out
 
         # Return the Like back to the user

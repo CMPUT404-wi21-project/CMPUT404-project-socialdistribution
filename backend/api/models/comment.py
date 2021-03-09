@@ -29,7 +29,7 @@ class Comment(models.Model):
     contentType = models.TextField(null=False, choices=ContentTypes, default='text/plain')
 
     # When the comment was created
-    published   = models.DateField(auto_now_add=True)
+    published   = models.DateTimeField(auto_now_add=True)
 
     # Comment Author, if the author is deleted: delete all comments made by this user?? (NOT SURE ABOUT CASCADE HERE)
     C_author_id   = models.ForeignKey(Author, on_delete=models.CASCADE)

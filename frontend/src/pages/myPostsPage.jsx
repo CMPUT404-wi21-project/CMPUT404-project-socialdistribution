@@ -11,7 +11,9 @@ import gfm from 'remark-gfm'
 import CreatePostModal from '../components/post/CreatePostModal';
 import EditPostModal from '../components/post/EditPostModal';
 import PaginationModal from '../components/post/PaginationModal';
-import DropDown from '../components/post/DropDown'
+import DropDown from '../components/post/DropDown';
+import CommentModal from '../components/post/CommentModal';
+import LikeModal from '../components/post/LikeModal';
 
 import { getCurAuthorPosts } from '../actions/postActions';
 
@@ -153,8 +155,8 @@ class myPostsPage extends React.Component {
                 style={{borderColor: '#eee #ddd #bbb', maxWidth: '80%', backgroundColor: 'white', marginLeft: 'auto', marginRight: 'auto'}}
                 actions={
                   [
-                    <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,                    
+                    <LikeModal/>,
+                    <CommentModal post={item}/>,
                     <DropDown 
                     correct={this.state.posts.length == this.props.posts.length} 
                     url={item.href} 

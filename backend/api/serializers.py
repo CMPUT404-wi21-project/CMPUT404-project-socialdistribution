@@ -1,4 +1,4 @@
-from .models import author, post, signupRequest, comment, like
+from .models import author, post, signupRequest, comment, like, inbox
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.core import serializers as serialize
@@ -51,7 +51,12 @@ class LikeSerializer(serializers.ModelSerializer):
         model = like.Like
         fields = ['post_id', 'comment_id', 'L_author_id', 'like_type', 'url']
 
-    
+
+# INBOX SERIALIZER
+class InboxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = inbox.Inbox
+        fields = ['author_id', 'messageType', 'post_id', 'comment_id', 'like_id', 'messageUrl']
 
 # serializer for author model
 class AuthorSerializer(serializers.ModelSerializer):

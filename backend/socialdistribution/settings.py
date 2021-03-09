@@ -187,6 +187,9 @@ if PROD:
     options = DATABASES['default'].get('OPTIONS', {})
     options.pop('sslmode', None)
 
+if DEBUG:
+    CORS_ORIGIN_ALLOW_ALL = True
+
 # longer access key life time
 if os.environ.get('DEBUG'):
     SIMPLE_JWT = {

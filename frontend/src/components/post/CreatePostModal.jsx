@@ -147,6 +147,7 @@ class CreatePostModal extends React.Component {
     }
 
     onFinish = (values) => {
+        console.log(values);
         // It can be the case that the user provides no categories, in that case, default to []
         if (values.categories === undefined) {
             values.categories = []
