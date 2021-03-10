@@ -16,6 +16,6 @@ class Friend(models.Model):
     # Note Sure how this will work yet, please look into it when you work on friends
     url= models.URLField(null=True)
 
-    published = models.DateField(auto_now_add=True)
+    published = models.DateTimeField(auto_now_add=True)
 
     # Do we wanna know when someone was un-befriended? Or is it enough to simply delete a friend record?

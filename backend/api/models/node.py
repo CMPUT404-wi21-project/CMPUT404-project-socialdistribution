@@ -12,7 +12,7 @@ class Node(models.Model):
     auth_password = models.CharField(max_length=200, null=False)
 
     # Just to know when the server began communication
-    date_added = models.DateField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Node: host={self.host_url}, username={self.auth_username}, password={self.auth_password}"

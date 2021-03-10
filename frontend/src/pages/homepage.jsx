@@ -12,6 +12,7 @@ import CreatePostModal from '../components/post/CreatePostModal';
 import EditPostModal from '../components/post/EditPostModal';
 import PaginationModal from '../components/post/PaginationModal';
 import DropDown from '../components/post/DropDown'
+import CommentModal from '../components/comment/CommentModal';
 
 import { getAuthorStreamPosts } from '../actions/postActions';
 
@@ -123,6 +124,7 @@ class homepage extends React.Component {
       dataList.push({
         authorId: `${temp[temp.length-1]}`,
         author: `${posts[i]['author']['displayName']}`,
+        apihref: `${posts[i]['id']}`,
         href: `${postUrl.href}`,
         title: `${posts[i]['title']}`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -173,7 +175,7 @@ class homepage extends React.Component {
                 actions={
                   [                    
                     <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                    <CommentModal post={item}/>,
                     item.authorId.toString() === this.props.authorId.toString() ?
                       <DropDown 
                       correct={this.state.posts.length == this.props.posts.length} 
