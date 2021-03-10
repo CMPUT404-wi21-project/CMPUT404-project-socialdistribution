@@ -17,7 +17,7 @@ class Author(AbstractUser):
     host    = models.URLField(max_length=500)
     
     # Full URL referencing this user
-    url     = models.URLField()
+    url     = models.URLField(unique=True)
 
     # Github Connect
     github = models.URLField()
