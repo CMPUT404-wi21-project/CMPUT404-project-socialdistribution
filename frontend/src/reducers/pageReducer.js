@@ -1,7 +1,7 @@
 import {CHANGE_PAGE, LOGOUT_SUCCESS} from '../actions/types';
 
 const initialState = {
-    activeKey : "1",
+    activeKey : "0",
 }
 
 
@@ -13,6 +13,7 @@ export default function(state=initialState, action) {
                 activeKey: action.payload,
             }
         case LOGOUT_SUCCESS:
+            localStorage.clear();
             return initialState;
         default:
             return state;

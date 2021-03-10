@@ -29,12 +29,12 @@ class RegisterForm extends React.Component {
             if (error.id === 'REGISTER_FAIL') {
                this.setState({msgs: error.msgs, msg_type: "error"}); 
             } else {
-                this.setState({msgs: null, msgs_type: null});
+                this.setState({msgs: [], msg_type: null});
             }
             // This should be authenticated routing
         } else if (isRegistered != prevProps.isRegistered) {
             // Send the user to the homepage
-            this.setState({msgs: "Successfully Registered! Please await admin approval before Login!", msg_type: "success"})
+            this.setState({msgs: [["Successfully Registered! ", "Please await admin approval before Login!"]], msg_type: "success"})
         }
     }
 
