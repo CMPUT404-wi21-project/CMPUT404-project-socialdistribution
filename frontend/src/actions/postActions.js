@@ -19,6 +19,7 @@ DELETE_POST_FAIL,
 GET_POST,
 GET_POST_SUCCESS,
 GET_POST_FAIL,
+CLEAR_ERRORS
 } from './types';
 
 // CREATE POST
@@ -63,6 +64,23 @@ export const editPost = (post,id) => (dispatch, getState) => {
             }
             dispatch(returnErrors(err.response.data, err.response.status, "EDIT_POST_FAIL"));
             dispatch({type: EDIT_POST_FAIL});
+        })
+}
+
+// GET POSTS by postID
+export const getPostByPostId = (postID) => (dispatch, getState) => {
+    dispatch({ type: GET_POST })
+    axios.get(process.env.REACT_APP_HOST +
+        `/author/${getState().auth.user.pk}/posts/${postID}`, tokenConfig(getState))
+        .then(res => dispatch({
+            type: GET_POST_SUCCESS,
+            payload: res.data,
+        }))
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status, "GET_POST_FAIL"));
+            dispatch({
+                type: GET_POST_FAIL,
+            });
         })
 }
 
