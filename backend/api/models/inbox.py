@@ -34,4 +34,4 @@ class Inbox(models.Model):
     messageUrl  = models.URLField()
 
     # When this record was created
-    published   = models.DateField(auto_now_add=True)
+    published   = models.DateTimeField(auto_now_add=True)

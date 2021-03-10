@@ -34,12 +34,21 @@ export const EDIT_POST_SUCCESS          = "EDIT_POST_SUCCESS";
 export const EDIT_POST_FAIL             = "EDIT_POST_FAIL";
 
 // PROFILE TYPES
-export const PROFILE_LOADING        = "PROFILE_LOADING";
-export const PROFILE_LOAD_SUCCESS   = "PROFILE_LOAD_SUCCESS";
-export const PROFILE_LOAD_FAIL      = "PROFILE_LOAD_FAIL";
-export const PROFILE_SAVING         = "PROFILE_SAVING";
-export const PROFILE_SAVE_SUCCESS   = "PROFILE_SAVE_SUCCESS";
-export const PROFILE_SAVE_FAIL      = "PROFILE_SAVE_FAIL";
+export const PROFILE_LOADING            = "PROFILE_LOADING";
+export const PROFILE_LOAD_SUCCESS       = "PROFILE_LOAD_SUCCESS";
+export const PROFILE_LOAD_FAIL          = "PROFILE_LOAD_FAIL";
+export const PROFILE_SAVING             = "PROFILE_SAVING";
+export const PROFILE_SAVE_SUCCESS       = "PROFILE_SAVE_SUCCESS";
+export const PROFILE_SAVE_FAIL          = "PROFILE_SAVE_FAIL";
 
 // PAGE SWITCH TYPES
-export const CHANGE_PAGE            = "CHANGE_PAGE";
+export const CHANGE_PAGE                = "CHANGE_PAGE";
+
+// COMMENT TYPES
+export const GET_COMMENTS               = "GET_COMMENTS";
+export const GET_COMMENTS_SUCCESS       = "GET_COMMENTS_SUCCESS";
+export const GET_COMMENTS_FAIL          = "GET_COMMENTS_FAIL";
+export const CREATE_COMMENT             = "CREATE_COMMENT";
+export const CREATE_COMMENT_SUCCESS     = "CREATE_COMMENT_SUCCESS";
+export const CREATE_COMMENT_FAIL        = "CREATE_POST_FAIL"
+export const CLEAR_COMMENTS             = "CLEAR_COMMENTS";

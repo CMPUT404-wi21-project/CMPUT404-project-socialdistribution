@@ -20,5 +20,5 @@ class Follower(models.Model):
     # Not sure yet so lets just hold off but might be needed, unless we can populate our author table with remote
     # Authors, in which case this table is fine as-is.
 
-    published  = models.DateField(auto_now_add=True)
+    published  = models.DateTimeField(auto_now_add=True)
 

@@ -12,6 +12,7 @@ import CreatePostModal from '../components/post/CreatePostModal';
 import EditPostModal from '../components/post/EditPostModal';
 import PaginationModal from '../components/post/PaginationModal';
 import DropDown from '../components/post/DropDown'
+import CommentModal from '../components/comment/CommentModal';
 
 import { getCurAuthorPosts } from '../actions/postActions';
 
@@ -120,6 +121,7 @@ class myPostsPage extends React.Component {
       postUrl.port = '';
       dataList.push({
         author: `${posts[i]['author']['displayName']}`,
+        apihref: `${posts[i]['id']}`,
         href: `${postUrl.href}`,
         title: `${posts[i]['title']}`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -171,7 +173,7 @@ class myPostsPage extends React.Component {
                 actions={
                   [
                     <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,                    
+                    <CommentModal post={item}/>,
                     <DropDown 
                     correct={this.state.posts.length == this.props.posts.length} 
                     url={item.href} 

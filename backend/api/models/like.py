@@ -29,3 +29,5 @@ class Like(models.Model):
     like_type  = models.TextField(choices=LikeTypes)
 
     url        = models.URLField()
+
+    published  = models.DateTimeField(auto_now_add=True)
