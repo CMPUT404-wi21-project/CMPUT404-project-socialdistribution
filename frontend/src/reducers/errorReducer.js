@@ -23,6 +23,7 @@ export default function(state = initialState, action) {
             };
         case CLEAR_ERRORS:
             return {
+                msgs: [],
                 msg: {},
                 status: null,
                 id: null,
