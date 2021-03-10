@@ -25,7 +25,7 @@ class CustomLayout extends React.Component {
     unAuthenticatedMenu = () => {
         return (
                 <Menu theme="dark" mode="horizontal">
-                        <Menu.Item key="1"><b>SocialDist</b></Menu.Item>
+                        <Menu.Item key="0"><b>SocialDist</b></Menu.Item>
                 </Menu>
         );
     }
@@ -33,7 +33,7 @@ class CustomLayout extends React.Component {
 
     authenticatedMenu = () => {
         return (
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[this.props.activeKey]}>
+                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[this.props.activeKey]} selectedKeys={[this.props.activeKey]} >
                         <Menu.Item key="1" onClick={() => this.setSelected("1")}>
                             <b>SocialDist</b>
                             <Link to="/Home" />

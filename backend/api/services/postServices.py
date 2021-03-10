@@ -75,6 +75,8 @@ class postServices():
     # try to filter for such post
     try:
       data = post.Post.objects.filter(post_id__exact=post_id)
+
+      visibleAuthors = data[0].get_visible_authors().values()
       data = serializers.serialize('json', data)
       data = json.loads(data)[0]['fields']
       data['post_id'] = post_id
@@ -83,10 +85,10 @@ class postServices():
       return Response(status=status.HTTP_404_NOT_FOUND)
 
     # verify author id, if author id not match return 404
-    if author_id and data['author_id'] == author_id:
-      return Response(data)
-    else:
-      return Response(status=status.HTTP_404_NOT_FOUND)
+    for i in range(len(visibleAuthors)):
+      if str(visibleAuthors[i]['id']) == str(author_id):
+        return Response(data)
+    return Response(status=status.HTTP_403_FORBIDDEN)
 
   @staticmethod
   def getPostByAuthorId(request, author_id):

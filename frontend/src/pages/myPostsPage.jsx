@@ -111,10 +111,16 @@ class myPostsPage extends React.Component {
   addPostsIntoList = (posts) => {
     this.state1.posts = posts;
     let dataList = [];
+    const localHost = window.location.host;
     for (let i = 0; i < posts.length; i++) {
+      let postUrl =  new URL(posts[i]['id']);
+      const tempUrlPath = postUrl.pathname.split('/');
+      postUrl.pathname = 'posts/'+ tempUrlPath[tempUrlPath.length-1];
+      postUrl.hostname = localHost.toString();
+      postUrl.port = '';
       dataList.push({
         author: `${posts[i]['author']['displayName']}`,
-        href: `${posts[i]['id']}`,
+        href: `${postUrl.href}`,
         title: `${posts[i]['title']}`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
         description:

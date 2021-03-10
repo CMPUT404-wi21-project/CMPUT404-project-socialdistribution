@@ -1,5 +1,7 @@
 import {
-    GET_POSTS, 
+    GET_POST,
+    GET_POST_SUCCESS,
+    GET_POST_FAIL,
     CREATE_POST, 
     DELETE_POST, 
     DELETE_POST_SUCCESS,
@@ -22,6 +24,7 @@ import {
 const initialState = {
     cachedPosts: {},
     posts: {},
+    post: null,
     isLoading: true,
     createError: false,
     editError: false,
@@ -90,7 +93,30 @@ export default function(state = initialState, action) {
                 editError: false,
                 getError: false,
             }
-            
+        case GET_POST_SUCCESS:{
+            return{
+                ...state,
+                post: action.payload,
+                isLoading: false,
+                createError: false,
+                deleteError: false,
+                editError: false,
+                getError: false,
+                postsCreated: false,
+            }
+        }
+        case GET_POST:{
+            return{
+                ...state,
+                isLoading: true,
+            }
+        }
+        case GET_POST_FAIL:{
+            return{
+                ...state,
+                getError: true,
+            }
+        }
         case GET_AUTHOR_POST_SUCCESS:{
             return{
                 ...state,

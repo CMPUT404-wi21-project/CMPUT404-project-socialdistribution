@@ -56,14 +56,14 @@ class homepage extends React.Component {
       this.props.getAuthorStreamPosts(this.pageNum, this.pageSize);
     }
 
-    if (!this.props.isLoading && this.state.posts.length != this.props.posts.length){
+    if (!this.props.isLoading && this.state.posts.length !== this.props.posts.length){
       this.addPostsIntoList(this.props.posts);
     }
     let isEdited = false;
     if (this.props.posts){
       isEdited = (JSON.stringify(this.props.posts[this.editedIndex]) !== JSON.stringify(this.state1.posts[this.editedIndex]))
     }
-    if (!this.props.isLoading && this.editedIndex != -1 && isEdited){
+    if (!this.props.isLoading && this.editedIndex !== -1 && isEdited){
       this.addPostsIntoList(this.props.posts);
       this.editedIndex = -1;
     }
@@ -111,12 +111,19 @@ class homepage extends React.Component {
   addPostsIntoList = (posts) => {
     this.state1.posts = posts;
     let dataList = [];
+    const localHost = window.location.host;
+
     for (let i = 0; i < posts.length; i++) {
       const temp = posts[i]['author']['id'].split("/");
+      let postUrl =  new URL(posts[i]['id']);
+      const tempUrlPath = postUrl.pathname.split('/');
+      postUrl.pathname = 'posts/'+ tempUrlPath[tempUrlPath.length-1];
+      postUrl.hostname = localHost.toString();
+      postUrl.port = '';
       dataList.push({
         authorId: `${temp[temp.length-1]}`,
         author: `${posts[i]['author']['displayName']}`,
-        href: `${posts[i]['id']}`,
+        href: `${postUrl.href}`,
         title: `${posts[i]['title']}`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
         description:
