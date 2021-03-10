@@ -12,6 +12,9 @@ import {
     GET_AUTHOR_POSTS,
     GET_AUTHOR_POST_SUCCESS,
     GET_AUTHOR_POST_FAIL,
+    GET_STREAM_POSTS,
+    GET_STREAM_POSTS_SUCCESS,
+    GET_STREAM_POSTS_FAIL,
     LOGOUT_SUCCESS,
 } from '../actions/types';
 
@@ -104,6 +107,37 @@ export default function(state = initialState, action) {
             return{
                 ...state,
                 isLoading: true,
+            }
+        }
+
+        case GET_AUTHOR_POST_FAIL:{
+            return{
+                ...state,
+                getError: true,
+            }
+        }
+        case GET_STREAM_POSTS:{
+            return{
+                ...state,
+                isLoading: true,
+            }
+        }
+        case GET_STREAM_POSTS_SUCCESS:{
+            return{
+                ...state,
+                posts: action.payload,
+                isLoading: false,
+                createError: false,
+                deleteError: false,
+                editError: false,
+                getError: false,
+                postsCreated: false,
+            }
+        }
+        case GET_STREAM_POSTS_FAIL:{
+            return{
+                ...state,
+                getError: true,
             }
         }
         case DELETE_POST:{
