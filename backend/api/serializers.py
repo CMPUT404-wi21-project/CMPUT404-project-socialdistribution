@@ -1,4 +1,4 @@
-from .models import author, post, signupRequest, comment, like
+from .models import author, post, signupRequest, comment, like, follower, friend
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.core import serializers as serialize
@@ -67,3 +67,10 @@ class AuthorSerializer(serializers.ModelSerializer):
     instance.github = validated_data.get('github', instance.github)
     instance.save()
     return instance
+
+
+# serializer for follower model
+class FollowerSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = follower.Follower
+    fields = ['followee', 'follower_url']

@@ -1,7 +1,7 @@
 from django.urls import path, re_path, include
 from django.conf.urls import url
 
-from .views import index, author, simplePostView, simpleSignupRequestView, authView, commentView, likeView
+from .views import index, author, simplePostView, simpleSignupRequestView, authView, commentView, likeView, followerView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # if you are adding a static path, consider put it on top of dynamic paths
@@ -20,6 +20,10 @@ urlpatterns = [
     
     # Profile Endpoint
     path('author/<str:id>/', author.author_profile_api, name="author-profile"),
+
+    # Follower Endpoint
+    path('author/<str:id>/followers/', followerView.get_followers_api, name="get-follower-of-author"),
+    path('author/<str:author_id>/followers/<str:foreign_author_id>', followerView.single_follower_manage_api, name="manage-single-follower"),
     
     # Token Endpoints
     path('api-auth/', include('rest_framework.urls')),    

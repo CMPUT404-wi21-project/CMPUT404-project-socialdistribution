@@ -11,10 +11,10 @@ class Friend(models.Model):
     record_id  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
 
     # The author whose is primary in this relationship
-    author_id = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="my_author_id")
+    author = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="my_author_id")
 
     # The friend of this author
-    my_friends_url = models.URLField()
+    friend_url = models.URLField()
     # my_friends_id = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="my_friends_id")
 
     published = models.DateTimeField(auto_now_add=True)

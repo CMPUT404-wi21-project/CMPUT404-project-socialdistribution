@@ -18,7 +18,7 @@ import {clearErrors} from '../../actions/errorActions';
 
 class RegisterForm extends React.Component {
     state = {
-        msgs: [],
+        msgs: [["Successfully Registered! ", "Please await admin approval before Login!"]],
         msg_type: null ,   
     };
 
@@ -95,6 +95,7 @@ class RegisterForm extends React.Component {
           <Form.Item
             name="github"
             rules={[{ required: true, message: 'Please input your Github URL!' }]}
+            initialValue='https://github.com/'
           >
             <Input prefix={<GithubOutlined />} placeholder="Github URL" />
           </Form.Item>
