@@ -18,9 +18,3 @@ class Follower(models.Model):
 
     class Meta:
         unique_together = ('followee', 'follower_url',)
-
-    def validate_unique(self,exclude=None):
-        try:
-            super(Parcare,self).validate_unique()
-        except ValidationError as e:
-            raise ValidationError(self.user+"your message")
