@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import NON_FIELD_ERRORS
 import uuid
 # Related Model
 from api.models.author import Author
@@ -12,11 +13,14 @@ class Follower(models.Model):
 
     # The person who want to follow
     follower_url = models.URLField()
-    # follower   = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="follower")
-
+    
     published  = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('followee', 'follower_url',)
 
-
+    def validate_unique(self,exclude=None):
+        try:
+            super(Parcare,self).validate_unique()
+        except ValidationError as e:
+            raise ValidationError(self.user+"your message")

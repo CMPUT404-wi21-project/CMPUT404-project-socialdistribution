@@ -19,7 +19,7 @@ def author_profile_api(request, id):
     try:
         a = Author.objects.get(id=id)
     except:
-        return Response(status=404)
+        return Response({"detail": "author not found"}, status=404)
 
     if request.method == 'GET':
         serializer = AuthorSerializer(a)

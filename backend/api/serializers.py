@@ -74,3 +74,9 @@ class FollowerSerializer(serializers.ModelSerializer):
   class Meta:
     model = follower.Follower
     fields = ['followee', 'follower_url']
+
+# serializer for friend model
+class FriendSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = friend.Friend
+    fields = ['author', 'friend_url']

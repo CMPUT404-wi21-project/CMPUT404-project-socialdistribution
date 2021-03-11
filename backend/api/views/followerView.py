@@ -7,6 +7,7 @@ import requests
 from ..models.author import Author
 from ..serializers import AuthorSerializer, FollowerSerializer
 from ..models.follower import Follower
+from ..services.followerServices import checkFriendMade, checkFriendBreak
 
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import permission_classes
@@ -25,7 +26,7 @@ def get_followers_api(request, id):
     try:
         a = Author.objects.get(id=id)
     except:
-        return Response(status=404)
+        return Response({"detail": "followee not found"}, status=404)
 
     f_list = Follower.objects.filter(followee__id__contains=id)
     follower_item_list = []
@@ -68,7 +69,7 @@ ouput:
     json or status code
 '''
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes((AllowAny,)) # to rm############
+# @permission_classes((AllowAny,)) #for testing
 def single_follower_manage_api(request, author_id, foreign_author_id):
     # if author exist
     try:
@@ -101,13 +102,16 @@ def single_follower_manage_api(request, author_id, foreign_author_id):
         serializer = FollowerSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+            # check if friend made
+            checkFriendMade(a.id, a.url, f_url)
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
 
     # DELETE: remove a follower
     elif request.method == 'DELETE':
         try:
-            f = Follower.objects.get(followee__id__contains=author_id, follower_url=f_url).delete()
+            Follower.objects.get(followee__id__contains=author_id, follower_url=f_url).delete()
+            checkFriendBreak(a.id, a.url, f_url)
             return Response(status=200)
         except:
             return Response({"detail": "follower not found"}, status=404)

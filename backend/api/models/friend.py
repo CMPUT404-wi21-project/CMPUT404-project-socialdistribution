@@ -15,8 +15,9 @@ class Friend(models.Model):
 
     # The friend of this author
     friend_url = models.URLField()
-    # my_friends_id = models.ForeignKey(Author, null=False, on_delete=models.CASCADE, related_name="my_friends_id")
-
+    
     published = models.DateTimeField(auto_now_add=True)
 
-    # Do we wanna know when someone was un-befriended? Or is it enough to simply delete a friend record?
+
+    class Meta:
+        unique_together = ('author', 'friend_url',)
