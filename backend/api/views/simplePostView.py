@@ -82,7 +82,7 @@ def handlePostByPostId(request, author_id, post_id):
 ###########################################
 def getPost(request, author_id, post_id):
   res = postServices.getPostByPostId(request, post_id, author_id)
-  if res.status_code == 404:
+  if res.status_code == 404 or res.status_code == 403:
     return res
   formatedRes = postServices.formatJSONpost(request, res.data, author_id, post_id)
   return formatedRes

@@ -64,5 +64,8 @@ class Post(models.Model):
     def get_visible_authors(self):
         if self.visibility == "public":
             return Author.objects.all()
+
+        # add author into the list
+        user = Author.objects.filter(id__exact=self.author_id.id)
         # Need to handle other visibility cases when the friend and follow model is made
-        return []
+        return user
